@@ -20,10 +20,14 @@ Diagram se sám neaktualizuje při změně kódu ani běžné kompilaci programu
 
 Třídy jsou identifikovány názvem. Pokud tedy dojde k přejmenování pravděpodobně dojde k jejich přemístění nebo změně velikosti.
 
+![package-context-menu](readme/package-context-menu.png)
+
 ##	Class diagram
 Panel class diagramu je interaktivní zobrazení struktury balíčku. 
 
 Class diagram balíčku se otevírá v panelu Projekt kliknutím sekundárním tlačítkem na zvolený balíček a z nabídky výběrem možnosti *Open Class diagram*. Položka *Open Class diagram* je použitelná pouze pokud je v balíčku soubor `package.bluej`.
+
+![classDiagram](readme/classDiagram.png)
 
 ###	Úprava diagramu
 V digramu je možné měnit pouze velikost a pozici tříd, vazby mezi nimi se automaticky přizpůsobují aktuálnímu rozložení a není možné je měnit. Při stisknutí primárního tlačítka myši a tažení třídy se zobrazí její náhled. 
@@ -41,6 +45,8 @@ Třídy jsou při každém otevření diagramu ve sbaleném stavu, tak se zobraz
 ## Export diagramu
 Diagram je možné exportovat do obrázku ve formátu PNG. Pro export diagramu do obrázku klikněte sekundárním tlačítkem myši na diagram a vyberte možnost Save as image. Po vybrání cesty a názvu souboru, klikněte na Uložit. Diagram se exportuje tak jak je aktuálně zobrazen, pokud tedy chcete mít některé třídy rozbalené, nebo naopak sbalené (viz Rozbalení a sbalení tříd) je potřeba je do tohoto stavu nejdříve uvést.
 
+![save-image](readme/save-image.png)
+
 ##	Smazání diagramu
-Pro smazání diagramu stačí smazat soubor package.bluej z vybraného balíčku. Po smazání se zneaktivní možnost Open Class diagram v nabídce balíčku a je pouze možné jej znovu vytvořit.
+Pro smazání diagramu stačí smazat soubor package.bluej z vybraného balíčku. Po smazání se zneaktivní možnost *Open Class diagram* v nabídce balíčku a je pouze možné jej znovu vytvořit.
 
