@@ -1,0 +1,43 @@
+<idea-plugin>
+    <id>com.vse.classdiagramidea</id>
+    <name>Class Diagram Painter</name>
+    <version>1.0</version>
+    <vendor email="vyhv00@vse.cz" url="http://www.vse.cz">University of economics in Prague</vendor>
+
+    <description><![CDATA[
+      Plugin for creating and showing class diagrams of single packages.
+    ]]></description>
+
+    <change-notes><![CDATA[
+      initial release
+    ]]>
+    </change-notes>
+
+    <!-- please see https://plugins.jetbrains.com/docs/intellij/build-number-ranges.html for description -->
+    <idea-version since-build="200"/>
+
+    <!-- please see https://plugins.jetbrains.com/docs/intellij/plugin-compatibility.html
+         on how to target different products -->
+    <depends>com.intellij.modules.java</depends>
+
+    <extensions defaultExtensionNs="com.intellij">
+        <!-- Add your extensions here -->
+        <fileEditorProvider implementation="classDiagramPainter.gui.DiagramViewProvider"/>
+        <editorTabTitleProvider implementation="classDiagramPainter.gui.DiagramViewTitleProvider"/>
+    </extensions>
+
+    <actions>
+        <!-- Add your actions here -->
+        <group id="ClassDiagramActions">
+            <separator />
+            <action id="createClassDiagram" class="classDiagramPainter.actions.CreateDiagramAction"
+                    text="Create Class diagram">
+            </action>
+            <action id="openClassDiagram" class="classDiagramPainter.actions.OpenDiagramAction"
+                    text="Open Class diagram">
+            </action>
+            <add-to-group group-id="ProjectViewPopupMenu" anchor="last"/>
+        </group>
+    </actions>
+
+</idea-plugin>
