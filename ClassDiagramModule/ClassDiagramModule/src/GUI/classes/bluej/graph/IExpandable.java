@@ -15,9 +15,19 @@ import bluej.pkgmgr.target.DependentTarget;
 public interface IExpandable {
 
     /**
-     * Resize target to show detailed info
+     * Resize target to expanded/colapsed size
+     */
+    public void switchExpansion();
+    
+    /**
+     * Expand target to show detailed info
      */
     public void expand();
+    
+    /**
+     * Colapse target to show basic view
+     */
+    public void colapse();
 
     /**
      * Returns whether target is expanded

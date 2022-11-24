@@ -17,18 +17,20 @@ import javax.lang.model.element.Name;
  *
  * @author vojta
  */
-public class MethodElement extends APointingElement{
+public class MethodElement extends APointingElement implements IOwnedElement {
 
     private final Name method;
     private final Set<Modifier> modifiers;
     private final Set<FieldElement> params = new LinkedHashSet<FieldElement>();
     private final String returnType;
     private boolean testMethod;
+    private final ClassLikeElement owner;
 
-    public MethodElement(Name method, Set<Modifier> modifiers, String returnType) {
+    public MethodElement(Name method, Set<Modifier> modifiers, String returnType, ClassLikeElement owner) {
         this.method = method;
         this.modifiers = modifiers;
         this.returnType = returnType;
+        this.owner = owner;
         testMethod = false;
     }
 
@@ -54,7 +56,7 @@ public class MethodElement extends APointingElement{
     public void addParam(FieldElement field) {
         this.params.add(field);
     }
-
+    
     public boolean isTestMethod() {
         return testMethod;
     }
@@ -65,6 +67,11 @@ public class MethodElement extends APointingElement{
 
     public String getReturnType() {
         return returnType;
+    }
+    
+    @Override
+    public ClassLikeElement getOwner() {
+        return owner;
     }
 
     @Override
@@ -89,7 +96,11 @@ public class MethodElement extends APointingElement{
         if (!Objects.equals(this.method, other.method)) {
             return false;
         }
-        return true;
+        if (!Objects.equals(this.params, other.params)) {
+            return false;
+        }
+        return Objects.equals(this.owner, other.owner);
     }
 
+    
 }

@@ -6,6 +6,8 @@
 package classDiagram;
 
 import bluej.SortedProperties;
+import bluej.graph.Edge;
+import bluej.graph.Vertex;
 import diagramParser.PackageRelations;
 import diagramParser.PackageParser;
 import elements.ClassElement;
@@ -27,6 +29,7 @@ import java.util.HashSet;
 import java.util.LinkedHashSet;
 import bluej.pkgmgr.target.DependentTarget;
 import bluej.pkgmgr.target.Target;
+import bluej.pkgmgr.target.role.AbstractClassRole;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import javax.lang.model.element.Modifier;
@@ -85,11 +88,15 @@ public class ParserAdapter {
                 String type = null;
                 switch (el.getElementType()) {
                     case ABSTRACT_CLASS: {
-                        type = "abstract";
+                        type = AbstractClassRole.ABSTRACT_ROLE_NAME;
                         break;
                     }
                     case ENUM: {
                         type = "enum";
+                        break;
+                    }
+                    case RECORD: {
+                        type = "record";
                         break;
                     }
                     case INTERFACE: {
@@ -121,21 +128,35 @@ public class ParserAdapter {
 
             for (ClassLikeElement from
                     : classes.keySet()) {
+                if (from.getContainment() != null) {
+                    Dependency containDep = new ContainmentDependency(pkg, classes.get(from), classes.get(from.getContainment()));
+                    pkg.addDependency(containDep, true);
+                }
+
                 LinkedHashSet<String> fields = new LinkedHashSet<>();
                 for (FieldElement field : from.getFields()) {
                     for (ClassLikeElement to : field.getPointers()) {
+                        DependentTarget fromClass = classes.get(from);
+                        DependentTarget toClass = classes.get(to);
                         Dependency uses = new AssociationDependency(pkg, classes.get(from), classes.get(to));
-                        pkg.addDependency(uses, true);
+                        if(addible(fromClass, toClass)) {
+                            pkg.addDependency(uses, true);
+                        }
                     }
                     if (classes.get(from) instanceof ClassTarget) {
                         fields.add(visibility(field) + field.getElement() + " : " + field.getIdentifier());
                     }
                 }
+
                 LinkedHashSet<String> methods = new LinkedHashSet<>();
                 for (MethodElement method : from.getMethods()) {
                     for (ClassLikeElement to : method.getPointers()) {
+                        DependentTarget fromClass = classes.get(from);
+                        DependentTarget toClass = classes.get(to);
                         Dependency uses = new UsesDependency(pkg, classes.get(from), classes.get(to));
-                        pkg.addDependency(uses, true);
+                        if(addible(fromClass, toClass)){
+                            pkg.addDependency(uses, true);
+                        }
                     }
                     if (classes.get(from) instanceof ClassTarget) {
                         methods.add(visibility(method) + method.getElement() + params(method) + " : " + method.getReturnType());
@@ -143,17 +164,23 @@ public class ParserAdapter {
                 }
                 ((ClassTarget) classes.get(from)).putFields(fields);
                 ((ClassTarget) classes.get(from)).putMethods(methods);
+
                 for (ClassLikeElement to : from.getImplementations()) {
                     Dependency implementsDep = new ImplementsDependency(pkg, classes.get(from), classes.get(to));
                     pkg.addDependency(implementsDep, true);
                 }
+                
+                System.out.println("classDiagram.ParserAdapter.generate()    " + from.getPointers().size());
+                for (ClassLikeElement to : from.getPointers()) {
+                    Dependency uses = new UsesDependency(pkg, classes.get(from), classes.get(to));
+                    if (addible(classes.get(from), classes.get(to))) {
+                        pkg.addDependency(uses, true);
+                    }
+                }
+                
                 if (from.getExtension() != null) {
                     Dependency extendsDep = new ExtendsDependency(pkg, classes.get(from), classes.get(from.getExtension()));
                     pkg.addDependency(extendsDep, true);
-                }
-                if (from.getContainment() != null) {
-                    Dependency agregDep = new ContainmentDependency(pkg, classes.get(from), classes.get(from.getContainment()));
-                    pkg.addDependency(agregDep, true);
                 }
                 if (identifiers.contains(classes.get(from).getIdentifierName())) {
                     pkg.addTarget(classes.get(from));
@@ -202,6 +229,16 @@ public class ParserAdapter {
         }
         params = params + ")";
         return params;
+    }
+
+    private boolean addible(Vertex fromClass, Vertex toClass) {
+        for (Iterator<? extends Edge> it = pkg.getEdges(); it.hasNext();) {
+            Edge edge = it.next();
+            if (edge.from.equals(fromClass) && edge.to.equals(toClass)) {
+                return false;
+            }
+        }
+        return true;
     }
 
 //    private void testFiller() {

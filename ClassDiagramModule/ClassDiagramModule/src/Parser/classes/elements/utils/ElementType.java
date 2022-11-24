@@ -17,5 +17,6 @@ public enum ElementType {
     ENUM,
     INTERFACE,
     FIELD,
-    METHOD;
+    METHOD,
+    RECORD;
 }

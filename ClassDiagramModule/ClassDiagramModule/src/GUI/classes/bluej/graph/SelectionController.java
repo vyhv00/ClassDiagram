@@ -33,6 +33,7 @@ import java.util.List;
 import bluej.pkgmgr.dependency.Dependency;
 import bluej.pkgmgr.target.DependentTarget;
 import bluej.pkgmgr.target.Target;
+import java.awt.event.ActionEvent;
 
 /**
  * This class controls the selection (the set of selected elements in the graph).
@@ -479,5 +480,13 @@ public class SelectionController
 
     @Override
     public void focusLost(FocusEvent e) {
+    }
+    
+    public void expand(ActionEvent e) {
+        selection.expand(e);
+    }
+    
+    public void colapse(ActionEvent e) {
+        selection.colapse(e);
     }
 }

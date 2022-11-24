@@ -15,15 +15,15 @@ import javax.lang.model.element.Name;
  *
  * @author vojta
  */
-public class EnumElement extends ClassLikeElement {
+public class RecordElement extends ClassLikeElement {
 
-    public EnumElement(Name element, Set<Modifier> modifiers) {
+    public RecordElement(Name element, Set<Modifier> modifiers) {
         super(element, modifiers);
     }
     
     // class is exactly defined by its name in a single package
     @Override
     public ElementType getElementType() {
-        return ElementType.ENUM;
+        return ElementType.RECORD;
     }   
 }

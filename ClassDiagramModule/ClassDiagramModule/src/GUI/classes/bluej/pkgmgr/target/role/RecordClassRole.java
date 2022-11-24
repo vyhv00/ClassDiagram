@@ -39,25 +39,26 @@ import javax.swing.*;//~~omatviichuk
  *
  * @author Poul Henriksen <polle@mip.sdu.dk>
  */
-public class EnumClassRole extends ClsMemberRecorderRole
+public class RecordClassRole extends ClsMemberRecorderRole
 {
-    public final static String ENUM_ROLE_NAME = "EnumTarget";
-    private static final Color bg = new Color(255, 255, 0);
+    public final static String RECORD_ROLE_NAME = "RecordTarget";
+    private static final Color bg = new Color(255, 153, 255);
+
     /**
      * Create the enum class role.
      */
-    public EnumClassRole()
+    public RecordClassRole()
     {
     }
 
     public String getRoleName()
     {
-        return ENUM_ROLE_NAME;
+        return RECORD_ROLE_NAME;
     }
 
     public String getStereotypeLabel()
     {
-        return "enum";
+        return "record";
     }
 
     /**

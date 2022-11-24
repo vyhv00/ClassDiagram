@@ -60,7 +60,7 @@ public class PackageParser {
             task.call();
             return showProcessor.getRelations();
         }
-        throw new Exception(packageDir + " is not a directory");
+        throw new IllegalArgumentException(packageDir + " is not a directory");
     }
 
 }

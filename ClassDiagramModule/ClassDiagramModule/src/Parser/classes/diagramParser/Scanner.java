@@ -22,6 +22,7 @@ import com.sun.source.tree.Tree;
 import com.sun.source.tree.VariableTree;
 import com.sun.source.util.TreePath;
 import com.sun.source.util.TreePathScanner;
+import elements.IOwnedElement;
 import java.util.ArrayList;
 import java.util.HashSet;
 import javax.lang.model.element.Name;
@@ -106,13 +107,40 @@ class Scanner extends TreePathScanner<TreePath, IDiagramElement> {
     @Override
     public TreePath visitVariable(VariableTree variable, IDiagramElement parent) {
         if (parent instanceof ClassLikeElement) {
-            variableScan(variable, parent);
+            FieldElement field = variableScan(variable, parent);
+            return super.visitVariable(variable, field);
+        }
+        if (parent instanceof MethodElement) {
+            return super.visitVariable(variable, parent);
         }
         return null;
     }
+    
+    @Override
+    public TreePath visitIdentifier(IdentifierTree identifier, IDiagramElement parent) {
+        System.out.println("className.methodName() " + parent.getElement() + "    " + identifier.getName() + "     " + identifier.getKind() + "    " );
+        //if (parent instanceof MethodElement method) {
+          //  relations.putMethodElement(parentMethod, pointers);
+        //}
+        if (parent instanceof IOwnedElement owned) {
+            parent = getTopOwner(owned);
+            if(parent instanceof ClassLikeElement clazz) {
+                relations.addUses(clazz, identifier.getName());
+            }
+        }
+        return null;
+    }
+    
+    protected IDiagramElement getTopOwner(IOwnedElement owned) {
+        IDiagramElement owner = owned.getOwner();
+        if(owner instanceof IOwnedElement own) {
+            return getTopOwner(own);
+        }
+        return owner;
+    }
 
-    protected void variableScan(VariableTree variable, IDiagramElement parent) {
-        FieldElement field = new FieldElement(variable.getName(), variable.getType().toString(), variable.getModifiers().getFlags());
+    protected FieldElement variableScan(VariableTree variable, IDiagramElement parent) {
+        FieldElement field = new FieldElement(variable.getName(), variable.getType().toString(), variable.getModifiers().getFlags(), parent);
 
         HashSet<Name> pointers = new HashSet<>();
 
@@ -132,28 +160,32 @@ class Scanner extends TreePathScanner<TreePath, IDiagramElement> {
             parentMethod.addParam(field);
             relations.putMethodElement(parentMethod, pointers);
         }
+        
+        return field;
     }
 
     @Override
     public TreePath visitMethod(MethodTree method, IDiagramElement parent) {
         if (!method.getName().contentEquals("<init>") && parent instanceof ClassLikeElement) {
-
-            MethodElement methodElement = new MethodElement(method.getName(), method.getModifiers().getFlags(), method.getReturnType().toString());
-
             ClassLikeElement parentClass = (ClassLikeElement) parent;
-            parentClass.addMethod(methodElement);
+            
+            MethodElement methodElement = new MethodElement(method.getName(), method.getModifiers().getFlags(), method.getReturnType().toString(), parentClass);
 
             for (VariableTree param : method.getParameters()) {
                 variableScan(param, methodElement);
             }
 
-            super.visitMethod(method, methodElement);
+            parentClass.addMethod(methodElement);
+            
+            TreePath tree = super.visitMethod(method, methodElement);
 
             if (methodElement.isTestMethod() && parent instanceof ClassElement) {
                 ((ClassElement) parent).maketestClass();
             }
+            
+            return tree;
         }
-        return null;
+        return super.visitMethod(method, parent);
     }
 
     @Override
@@ -164,7 +196,7 @@ class Scanner extends TreePathScanner<TreePath, IDiagramElement> {
         }
         return null;
     }
-
+    
     private ArrayList<Tree> scanCollections(Tree fieldType) {
         ArrayList<Tree> pointers = new ArrayList<>();
         if (fieldType != null) {
@@ -184,5 +216,4 @@ class Scanner extends TreePathScanner<TreePath, IDiagramElement> {
         }
         return pointers;
     }
-
 }

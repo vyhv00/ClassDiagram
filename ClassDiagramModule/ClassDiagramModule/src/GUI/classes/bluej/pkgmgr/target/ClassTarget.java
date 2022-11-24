@@ -50,6 +50,7 @@ import java.util.LinkedHashSet;
 import javax.swing.JComponent;
 import bluej.pkgmgr.graphPainter.ClassTargetPainter;
 import static bluej.pkgmgr.target.Target.FRC;
+import bluej.pkgmgr.target.role.RecordClassRole;
 
 /**
  * A class target in a package, i.e. a target that is a class file built from
@@ -138,6 +139,8 @@ public class ClassTarget extends DependentTarget
                 role = new InterfaceClassRole();
             } else if (template.startsWith("enum")) {
                 role = new EnumClassRole();
+            } else if (template.startsWith("record")) {
+                role = new RecordClassRole();
             }
             //~+ SIMJ08
             /*
@@ -374,6 +377,8 @@ public class ClassTarget extends DependentTarget
             setRole(new InterfaceClassRole());
         } else if (EnumClassRole.ENUM_ROLE_NAME.equals(type)) {
             setRole(new EnumClassRole());
+        } else if (RecordClassRole.RECORD_ROLE_NAME.equals(type)) {
+            setRole(new RecordClassRole());
         }
 
         String sFields = props.getProperty(prefix + ".fields");
@@ -411,11 +416,11 @@ public class ClassTarget extends DependentTarget
     //-vyhv
     @Override
     public void doubleClick(MouseEvent evt) {
-        expand();
+        switchExpansion();
     }
 
     @Override
-    public void expand() {
+    public void switchExpansion() {
         expanded = !expanded;
         if (expanded) {
             calcExpSize();
@@ -427,6 +432,26 @@ public class ClassTarget extends DependentTarget
             if (assoc != null) {
                 super.getPackage().getEditor().moveToBack(assoc.getComponent());
             }
+        }
+        super.getPackage().getEditor().graphChanged();
+    }
+
+    @Override
+    public void expand() {
+        expanded = true;
+        calcExpSize();
+        super.setSize(expWidth, expHeight);
+        super.getPackage().getEditor().moveToFront(super.getComponent());
+        super.getPackage().getEditor().graphChanged();
+    }
+
+    @Override
+    public void colapse() {
+        expanded = false;
+        super.setSize(regWidth, regHeight);
+        super.getPackage().getEditor().moveToBack(super.getComponent());
+        if (assoc != null) {
+            super.getPackage().getEditor().moveToBack(assoc.getComponent());
         }
         super.getPackage().getEditor().graphChanged();
     }
@@ -533,7 +558,7 @@ public class ClassTarget extends DependentTarget
         }
 
     }
-    
+
     private class ClassComponent extends VertexJComponent {
 
         @Override
@@ -542,5 +567,5 @@ public class ClassTarget extends DependentTarget
             ClassTargetPainter.drawUMLStyle((Graphics2D) g, ClassTarget.this, ClassTarget.this.getWidth(), ClassTarget.this.getHeight(), false);
             ClassTargetPainter.drawShadow((Graphics2D) g, ClassTarget.this.getWidth(), ClassTarget.this.getHeight());
         }
-}
+    }
 }

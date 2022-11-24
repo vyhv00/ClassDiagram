@@ -19,7 +19,7 @@ import com.sun.source.util.Trees;
 import javax.lang.model.element.Element;
 
 @SupportedAnnotationTypes("*")
-@SupportedSourceVersion(SourceVersion.RELEASE_11)
+@SupportedSourceVersion(SourceVersion.RELEASE_15)
 class CodeProcessor extends AbstractProcessor {
 
     private Trees trees;

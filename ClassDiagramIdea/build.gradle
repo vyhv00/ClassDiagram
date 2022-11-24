@@ -17,11 +17,19 @@ repositories {
 
 // Configure Gradle IntelliJ Plugin - read more: https://plugins.jetbrains.com/docs/intellij/tools-gradle-intellij-plugin.html
 intellij {
-    version = "2021.3.2"
-    type = "IC"
+    version = "2022.2"
+    type = "IU"
     plugins = ['com.intellij.java']
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: '*.jar')
+}
+
+tasks {
+    patchPluginXml {
+        version(pluginVersion)
+        sinceBuild = pluginSinceBuild
+        untilBuild = ''
+    }
 }

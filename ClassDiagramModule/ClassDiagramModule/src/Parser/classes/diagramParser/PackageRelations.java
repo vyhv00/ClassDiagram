@@ -31,6 +31,7 @@ public class PackageRelations {
     private final Map<Name, ClassLikeElement> classLikeElements;
     private final Map<FieldElement, Set<Name>> fieldPointers;
     private final Map<MethodElement, Set<Name>> methodPointers;
+    private final Map<ClassLikeElement, Set<Name>> usesPointers;
     private final Map<ClassLikeElement, Set<Name>> classImplementations;
     private final Map<ClassLikeElement, Name> classExtension;
 
@@ -39,6 +40,7 @@ public class PackageRelations {
         this.classLikeElements = new HashMap<>();
         this.fieldPointers = new HashMap<>();
         this.methodPointers = new HashMap<>();
+        this.usesPointers = new HashMap<>();
         this.classImplementations = new HashMap<>();
         this.classExtension = new HashMap<>();
     }
@@ -73,6 +75,20 @@ public class PackageRelations {
      */
     public void putMethodElement(MethodElement method, Set<Name> fieldPointers) {
         this.methodPointers.put(method, fieldPointers);
+    }
+    
+    /**
+     * Puts a method element into map with set of Names of field identifiers
+     * possibly poiting to some ClassLikeElements in this package
+     *
+     * @param clazz
+     * @param classPointer
+     */
+    public void addUses(ClassLikeElement clazz, Name classPointer) {
+        if(!usesPointers.containsKey(clazz)) {
+            this.usesPointers.put(clazz, new HashSet<>());
+        }
+        usesPointers.get(clazz).add(classPointer);
     }
 
     /**
@@ -128,6 +144,7 @@ public class PackageRelations {
         createClassRelations();
         createRelations(fieldPointers);
         createRelations(methodPointers);
+        createRelations(usesPointers);
         createTestClasses();
         return new HashSet<>(classLikeElements.values());
     }

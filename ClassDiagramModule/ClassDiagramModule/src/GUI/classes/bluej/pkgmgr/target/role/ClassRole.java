@@ -37,6 +37,8 @@ public abstract class ClassRole {
     public final static String CLASS_ROLE_NAME = null;
 
     private ClassTarget ct;
+    private static final Color bg = new Color(255, 204, 102);
+
 
     public String getRoleName() {
         return CLASS_ROLE_NAME;
@@ -50,10 +52,7 @@ public abstract class ClassRole {
      * @param height Height of total area to paint
      */
     public Paint getBackgroundPaint(int width, int height) {
-        Paint result = new GradientPaint(
-                0, 0, new Color(246, 221, 192),
-                0, height, new Color(245, 204, 155));
-        return result;
+        return bg;
     }
 
     /**

@@ -26,6 +26,7 @@ import java.awt.event.MouseEvent;
 import java.util.HashSet;
 import java.util.Set;
 import bluej.pkgmgr.target.ClassTarget;
+import java.awt.event.ActionEvent;
 
 /**
  * SelectionSet holds a set of selected graph elements. By inserting an
@@ -237,5 +238,21 @@ public final class SelectionSet
             }
         }
         return null;
+    }
+    
+    public void expand(ActionEvent e) {
+        for (SelectableGraphElement element : elements) {
+            if(element instanceof IExpandable iExpandable) {
+                iExpandable.expand();
+            }
+        }
+    }
+    
+    public void colapse(ActionEvent e) {
+        for (SelectableGraphElement element : elements) {
+            if(element instanceof IExpandable iExpandable) {
+                iExpandable.colapse();
+            }
+        }
     }
 }

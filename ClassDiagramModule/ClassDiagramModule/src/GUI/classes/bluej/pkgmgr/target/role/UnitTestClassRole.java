@@ -34,6 +34,8 @@ public class UnitTestClassRole extends ClsMemberRecorderRole {
 
     public static final String UNITTEST_ROLE_NAME = "UnitTestTarget";
     public static final String UNITTEST_ROLE_NAME_JUNIT4 = "UnitTestTargetJunit4";
+    
+    private static final Color bg = new Color(204,204,153);
 
     /**
      * Whether this is a Junit 4 test class. If false, it's a Junit 3 test
@@ -67,9 +69,6 @@ public class UnitTestClassRole extends ClsMemberRecorderRole {
      */
     @Override
     public Paint getBackgroundPaint(int width, int height) {
-        Paint result = new GradientPaint(
-                0, 0, new Color(197, 211, 165),
-                0, height, new Color(170, 190, 140));
-        return result;
+        return bg;
     }
 }

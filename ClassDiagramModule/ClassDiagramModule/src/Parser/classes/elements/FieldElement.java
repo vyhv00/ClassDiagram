@@ -16,16 +16,18 @@ import javax.lang.model.element.Name;
  *
  * @author vojta
  */
-public class FieldElement extends APointingElement {
+public class FieldElement extends APointingElement implements IOwnedElement {
 
     private final Name field;
     private final String identifier;
     private final Set<Modifier> modifiers;
+    private final IDiagramElement owner;
 
-    public FieldElement(Name field, String identifier, Set<Modifier> modifiers) {
+    public FieldElement(Name field, String identifier, Set<Modifier> modifiers, IDiagramElement owner) {
         this.field = field;
         this.identifier = identifier;
         this.modifiers = modifiers;
+        this.owner = owner;
     }
 
     @Override
@@ -45,6 +47,11 @@ public class FieldElement extends APointingElement {
     @Override
     public ElementType getElementType() {
         return ElementType.FIELD;
+    }
+    
+    @Override
+    public IDiagramElement getOwner() {
+        return owner;
     }
 
     @Override
@@ -69,7 +76,9 @@ public class FieldElement extends APointingElement {
         if (!Objects.equals(this.field, other.field)) {
             return false;
         }
-        return true;
+        return Objects.equals(this.owner, other.owner);
     }
+
+    
 
 }

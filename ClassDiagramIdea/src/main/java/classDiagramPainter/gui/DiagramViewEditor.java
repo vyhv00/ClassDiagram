@@ -8,7 +8,9 @@ import com.intellij.openapi.fileEditor.FileEditorState;
 import com.intellij.openapi.util.Disposer;
 import com.intellij.openapi.util.Key;
 import com.intellij.openapi.util.UserDataHolderBase;
+import com.intellij.openapi.vfs.VfsUtil;
 import com.intellij.openapi.vfs.VirtualFile;
+import com.intellij.testFramework.LightVirtualFile;
 import com.sun.jna.platform.FileMonitor;
 import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.NotNull;
@@ -16,12 +18,14 @@ import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import java.beans.PropertyChangeListener;
+import java.io.File;
 import java.io.IOException;
 
 public class DiagramViewEditor extends UserDataHolderBase implements FileEditor, FileListener {
 
     private static final Key<String> INIT_ACTION = Key.create("DiagramViewEditor.InitAction");
     private static final Key<String> TITLE = Key.create("DiagramViewEditor.Title");
+    private static final Key<String> PACKAGE = Key.create("DiagramViewEditor.Package");
     private static final String INIT_ACTION_CREATE = "DiagramViewEditor.InitAction.Create";
     private static final String INIT_ACTION_OPEN = "DiagramViewEditor.InitAction.Open";
 
@@ -102,6 +106,10 @@ public class DiagramViewEditor extends UserDataHolderBase implements FileEditor,
         return TITLE;
     }
 
+    public static Key<String> getPackage() {
+        return PACKAGE;
+    }
+
     public static String getInitActionCreate() {
         return INIT_ACTION_CREATE;
     }
@@ -111,7 +119,7 @@ public class DiagramViewEditor extends UserDataHolderBase implements FileEditor,
     }
 
     private void prepareGraph() throws IOException {
-        diagram = new DiagramGUI(file.getPath());
+        diagram = new DiagramGUI(((LightVirtualFile) file).getOriginalFile().getPath());
     }
 
     public void openGraph() {

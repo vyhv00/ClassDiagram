@@ -44,6 +44,7 @@ import javax.swing.*;
 public class AbstractClassRole extends ClsMemberRecorderRole
 {
     public final static String ABSTRACT_ROLE_NAME = "AbstractTarget";
+        private static final Color bg = new Color(255, 153, 153);
 
     /**
      * Create the abstract class role.
@@ -67,6 +68,6 @@ public class AbstractClassRole extends ClsMemberRecorderRole
      */
     public Paint getBackgroundPaint(int width, int height)
     {
-            return super.getBackgroundPaint(width, height);
+        return bg;
     }
 }

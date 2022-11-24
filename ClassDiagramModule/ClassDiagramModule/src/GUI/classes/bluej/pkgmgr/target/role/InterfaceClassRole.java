@@ -47,7 +47,7 @@ import java.awt.*;
 public class InterfaceClassRole extends ClsMemberRecorderRole
 {
     public final static String INTERFACE_ROLE_NAME = "InterfaceTarget";
-
+    private static final Color bg = new Color(102, 255, 102);
 
     /**
      * Create the interface class role.
@@ -71,6 +71,6 @@ public class InterfaceClassRole extends ClsMemberRecorderRole
      */
     public Paint getBackgroundPaint(int width, int height)
     {
-            return super.getBackgroundPaint(width, height);
+        return bg;
     }
 }

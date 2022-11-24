@@ -18,7 +18,7 @@ import javax.lang.model.element.Name;
 public interface IDiagramElement {
 
     /**
-     * Returns unigue name of element
+     * Returns unique name of element
      *
      * @return
      */

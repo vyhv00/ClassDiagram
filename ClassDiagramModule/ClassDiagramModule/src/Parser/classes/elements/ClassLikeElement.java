@@ -16,7 +16,7 @@ import javax.lang.model.element.Name;
  *
  * @author vojta
  */
-public abstract class ClassLikeElement implements IDiagramElement {
+public abstract class ClassLikeElement extends APointingElement {
 
     private final Name element;
     private final Set<FieldElement> fields = new LinkedHashSet<FieldElement>();
@@ -113,5 +113,4 @@ public abstract class ClassLikeElement implements IDiagramElement {
         }
         return true;
     }
-
 }
