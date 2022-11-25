@@ -22,6 +22,7 @@ import com.sun.source.tree.Tree;
 import com.sun.source.tree.VariableTree;
 import com.sun.source.util.TreePath;
 import com.sun.source.util.TreePathScanner;
+import elements.IOwnedElement;
 import java.util.ArrayList;
 import java.util.HashSet;
 import javax.lang.model.element.Name;
@@ -112,28 +113,27 @@ class Scanner extends TreePathScanner<TreePath, IDiagramElement> {
     }
 
     protected void variableScan(VariableTree variable, IDiagramElement parent) {
-        if (parent instanceof ClassLikeElement clazz) {
-            FieldElement field = new FieldElement(variable.getName(), variable.getType().toString(), variable.getModifiers().getFlags(), clazz);
+        FieldElement field = new FieldElement(variable.getName(), variable.getType().toString(), variable.getModifiers().getFlags(), parent);
 
-            HashSet<Name> pointers = new HashSet<>();
+        HashSet<Name> pointers = new HashSet<>();
 
-            for (Tree argument : scanCollections(variable.getType())) {
-                if (argument.getKind().equals(Tree.Kind.IDENTIFIER)) {
-                    IdentifierTree a = (IdentifierTree) argument;
-                    pointers.add(a.getName());
-                }
-            }
-
-            if (parent instanceof ClassLikeElement) {
-                ClassLikeElement parentClass = (ClassLikeElement) parent;
-                parentClass.addField(field);
-                relations.putFieldElement(field, pointers);
-            } else if (parent instanceof MethodElement) {
-                MethodElement parentMethod = (MethodElement) parent;
-                parentMethod.addParam(field);
-                relations.putMethodElement(parentMethod, pointers);
+        for (Tree argument : scanCollections(variable.getType())) {
+            if (argument.getKind().equals(Tree.Kind.IDENTIFIER)) {
+                IdentifierTree a = (IdentifierTree) argument;
+                pointers.add(a.getName());
             }
         }
+
+        if (parent instanceof ClassLikeElement) {
+            ClassLikeElement parentClass = (ClassLikeElement) parent;
+            parentClass.addField(field);
+            relations.putFieldElement(field, pointers);
+        } else if (parent instanceof MethodElement) {
+            MethodElement parentMethod = (MethodElement) parent;
+            parentMethod.addParam(field);
+            relations.putMethodElement(parentMethod, pointers);
+        }
+
     }
 
     @Override
