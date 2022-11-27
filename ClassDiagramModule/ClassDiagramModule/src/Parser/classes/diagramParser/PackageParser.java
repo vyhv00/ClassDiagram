@@ -28,7 +28,7 @@ public class PackageParser {
     /**
      * @param packageDir
      */
-    public static PackageRelations parsePkg(File packageDir) throws Exception {
+    public static PackageRelations parsePkg(File packageDir, JavaCompiler compiler) throws Exception {
         if (packageDir.isDirectory()) {
             File[] files1 = packageDir.listFiles(new FilenameFilter() {
                 @Override
@@ -36,7 +36,7 @@ public class PackageParser {
                     return name.endsWith(".java");
                 }
             });
-            
+
             String tmpdir = System.getProperty("java.io.tmpdir");
             long pid = ProcessHandle.current().pid();
             File outputDir = new File(tmpdir + "/diagram" + pid);
@@ -45,13 +45,16 @@ public class PackageParser {
             List<File> output = new ArrayList<>();
             output.add(outputDir);
 
-            JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
+            if (compiler == null) {
+                compiler = ToolProvider.getSystemJavaCompiler();
+            }
+            assert compiler != null;
             StandardJavaFileManager fileManager = compiler.getStandardFileManager(null, null, null);
             fileManager.setLocation(StandardLocation.CLASS_OUTPUT, output);
 
             Iterable<? extends JavaFileObject> compilationUnits1
                     = fileManager.getJavaFileObjectsFromFiles(Arrays.asList(files1));
-            
+
             CompilationTask task = compiler.getTask(null, fileManager, null, null, null, compilationUnits1);
             LinkedList<AbstractProcessor> processors = new LinkedList<>();
             CodeProcessor showProcessor = new CodeProcessor();

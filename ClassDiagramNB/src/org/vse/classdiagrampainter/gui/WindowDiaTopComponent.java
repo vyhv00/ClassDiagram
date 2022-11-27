@@ -18,6 +18,7 @@ import org.openide.util.Exceptions;
 import org.openide.windows.TopComponent;
 import org.openide.util.NbBundle.Messages;
 import classDiagram.DiagramGUI;
+import javax.tools.ToolProvider;
 
 /**
  * Top component which displays something.
@@ -135,8 +136,8 @@ public final class WindowDiaTopComponent extends TopComponent {
         try {
             if (this.isOpened()) {
                 diagram.save();
-            }
-            diagram.generate();
+            } 
+            diagram.generate(ToolProvider.getSystemJavaCompiler());
             removeAll();
             add(diagram.getFrame());
             repaint();

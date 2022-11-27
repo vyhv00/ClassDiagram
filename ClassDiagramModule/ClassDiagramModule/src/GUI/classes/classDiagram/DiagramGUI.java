@@ -12,6 +12,7 @@ import bluej.pkgmgr.PkgMgrFrame;
 import java.io.File;
 import java.io.IOException;
 import bluej.pkgmgr.Package;
+import javax.tools.JavaCompiler;
 
 public class DiagramGUI {
 
@@ -26,9 +27,9 @@ public class DiagramGUI {
         frame = PkgMgrFrame.createFrame(pkg);
     }
 
-    public void generate() throws Exception {
+    public void generate(JavaCompiler compiler) throws Exception {
         ParserAdapter adapter = new ParserAdapter(pkg);
-        adapter.paintGraph();
+        adapter.paintGraph(compiler);
         frame.doSave();
         pkg.repaint();
     }

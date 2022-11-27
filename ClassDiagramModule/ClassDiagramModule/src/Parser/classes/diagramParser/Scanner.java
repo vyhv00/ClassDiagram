@@ -14,7 +14,9 @@ import elements.IDiagramElement;
 import elements.MethodElement;
 import com.sun.source.tree.AnnotationTree;
 import com.sun.source.tree.ArrayTypeTree;
+import com.sun.source.tree.BlockTree;
 import com.sun.source.tree.ClassTree;
+import com.sun.source.tree.ExpressionTree;
 import com.sun.source.tree.IdentifierTree;
 import com.sun.source.tree.MethodTree;
 import com.sun.source.tree.ParameterizedTypeTree;
@@ -22,6 +24,7 @@ import com.sun.source.tree.Tree;
 import com.sun.source.tree.VariableTree;
 import com.sun.source.util.TreePath;
 import com.sun.source.util.TreePathScanner;
+import elements.EnumElement;
 import elements.IOwnedElement;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -107,12 +110,40 @@ class Scanner extends TreePathScanner<TreePath, IDiagramElement> {
     @Override
     public TreePath visitVariable(VariableTree variable, IDiagramElement parent) {
         if (parent instanceof ClassLikeElement) {
-            variableScan(variable, parent);
+            if (parent instanceof EnumElement parentClass && variable.getInitializer().getKind() == Tree.Kind.NEW_CLASS && variable.getType().toString().equals(parentClass.getElement().toString())) {
+                FieldElement field = new FieldElement(variable.getName(), null, variable.getModifiers().getFlags(), parent);
+                parentClass.addField(field);
+                return null;
+            }
+            FieldElement field = variableScan(variable, parent);
+            return super.visitVariable(variable, field);
+        }
+        if (parent instanceof MethodElement) {
+            return super.visitVariable(variable, parent);
         }
         return null;
     }
 
-    protected void variableScan(VariableTree variable, IDiagramElement parent) {
+    @Override
+    public TreePath visitIdentifier(IdentifierTree identifier, IDiagramElement parent) {
+        if (parent instanceof IOwnedElement owned) {
+            parent = getTopOwner(owned);
+            if (parent instanceof ClassLikeElement clazz) {
+                relations.addUses(clazz, identifier.getName());
+            }
+        }
+        return null;
+    }
+
+    protected IDiagramElement getTopOwner(IOwnedElement owned) {
+        IDiagramElement owner = owned.getOwner();
+        if (owner instanceof IOwnedElement own) {
+            return getTopOwner(own);
+        }
+        return owner;
+    }
+
+    protected FieldElement variableScan(VariableTree variable, IDiagramElement parent) {
         FieldElement field = new FieldElement(variable.getName(), variable.getType().toString(), variable.getModifiers().getFlags(), parent);
 
         HashSet<Name> pointers = new HashSet<>();
@@ -134,36 +165,45 @@ class Scanner extends TreePathScanner<TreePath, IDiagramElement> {
             relations.putMethodElement(parentMethod, pointers);
         }
 
+        return field;
     }
 
     @Override
     public TreePath visitMethod(MethodTree method, IDiagramElement parent) {
-        if (!method.getName().contentEquals("<init>") && parent instanceof ClassLikeElement clazz) {
+        if (parent instanceof ClassLikeElement clazz) {
+            MethodElement methodElement = null;
+            if (!method.getName().contentEquals("<init>")) {
 
-            MethodElement methodElement = new MethodElement(method.getName(), method.getModifiers().getFlags(), method.getReturnType().toString(), clazz);
+                methodElement = new MethodElement(method.getName(), method.getModifiers().getFlags(), method.getReturnType().toString(), clazz, false);
 
-            clazz.addMethod(methodElement);
+                clazz.addMethod(methodElement);
 
-            for (VariableTree param : method.getParameters()) {
-                variableScan(param, methodElement);
+                for (VariableTree param : method.getParameters()) {
+                    variableScan(param, methodElement);
+                }
+                for (AnnotationTree anotation : method.getModifiers().getAnnotations()) {
+                    if (anotation.getAnnotationType().toString().contains("Test")) { // https://junit.org/junit5/docs/current/user-guide/#writing-tests-classes-and-methods
+                        ((MethodElement) parent).setTestMethod(true);
+                        ((ClassElement) parent).maketestClass();
+                        break;
+                    }
+                }
+            } else {
+                if (method.getBody().getStatements().toString().equals("super();")) {
+                    return null;
+                }
+
+                methodElement = new MethodElement(method.getName(), method.getModifiers().getFlags(), null, clazz, true);
+
+                clazz.addMethod(methodElement);
+
+                for (VariableTree param : method.getParameters()) {
+                    variableScan(param, methodElement);
+                }
             }
-
-            super.visitMethod(method, methodElement);
-
-            if (methodElement.isTestMethod() && parent instanceof ClassElement) {
-                ((ClassElement) parent).maketestClass();
-            }
+            return super.visitMethod(method, methodElement);
         }
-        return null;
-    }
-
-    @Override
-    public TreePath visitAnnotation(AnnotationTree anotation, IDiagramElement parent) {
-        // is method annotated as a test
-        if (parent instanceof MethodElement && anotation.getAnnotationType().toString().contains("Test")) { // https://junit.org/junit5/docs/current/user-guide/#writing-tests-classes-and-methods
-            ((MethodElement) parent).setTestMethod(true);
-        }
-        return null;
+        return super.visitMethod(method, parent);
     }
 
     private ArrayList<Tree> scanCollections(Tree fieldType) {
@@ -185,5 +225,4 @@ class Scanner extends TreePathScanner<TreePath, IDiagramElement> {
         }
         return pointers;
     }
-
 }

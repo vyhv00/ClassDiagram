@@ -376,18 +376,19 @@ public class GraphEditor extends JLayeredPane
         private JPopupMenu createPopupMenu(Component component) {
             JPopupMenu menu = new JPopupMenu();
             JMenuItem menuImageItem = saveImageItem(component);
-            JMenuItem menuExpandItem = new JMenuItem("Expand Classes");
+            JMenuItem menuExpandItem = new JMenuItem("Expand selected classes");
             menuExpandItem.setFont(new Font("Arial", Font.PLAIN, 12));
             menuExpandItem.addActionListener((e) -> {
                 selectionController.expand(e);
             });
-            JMenuItem menuColapseItem = new JMenuItem("Colapse Classes");
+            JMenuItem menuColapseItem = new JMenuItem("Collapse selected classes");
             menuColapseItem.setFont(new Font("Arial", Font.PLAIN, 12));
             menuColapseItem.addActionListener((e) -> {
                 selectionController.colapse(e);
             });
             menu.add(menuExpandItem);
             menu.add(menuColapseItem);
+            menu.addSeparator();
             menu.add(menuImageItem);
             return menu;
         }

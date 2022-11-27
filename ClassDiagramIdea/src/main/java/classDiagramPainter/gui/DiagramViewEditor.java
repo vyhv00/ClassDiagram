@@ -15,8 +15,11 @@ import com.sun.jna.platform.FileMonitor;
 import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.jetbrains.jps.javac.JavacMain;
 
 import javax.swing.*;
+import javax.tools.JavaCompiler;
+import javax.tools.ToolProvider;
 import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.io.IOException;
@@ -132,7 +135,11 @@ public class DiagramViewEditor extends UserDataHolderBase implements FileEditor,
     public void createGraph() throws IOException {
         try {
             diagram.getFrame().doSave();
-            diagram.generate();
+            JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
+            if(compiler == null) {
+                compiler = (JavaCompiler) Class.forName("com.sun.tools.javac.api.JavacTool", true, JavacMain.class.getClassLoader()).newInstance();
+            }
+            diagram.generate(compiler);
             diagram.getFrame().doSave();
             name = diagram.getPkgName() + ": Class Diagram";
             file.putUserData(TITLE, name);

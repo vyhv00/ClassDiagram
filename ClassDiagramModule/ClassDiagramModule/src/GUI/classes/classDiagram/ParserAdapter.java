@@ -33,6 +33,7 @@ import bluej.pkgmgr.target.role.AbstractClassRole;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import javax.lang.model.element.Modifier;
+import javax.tools.JavaCompiler;
 
 /**
  *
@@ -46,16 +47,16 @@ public class ParserAdapter {
         this.pkg = pkg;
     }
 
-    public void paintGraph() throws IOException {
-        generate();
+    public void paintGraph(JavaCompiler compiler) throws Exception {
+        generate(compiler);
     }
 
     /**
      *
      */
-    private void generate() {
+    private void generate(JavaCompiler compiler) throws Exception {
         try {
-            PackageRelations rel = PackageParser.parsePkg(pkg.getPath());
+            PackageRelations rel = PackageParser.parsePkg(pkg.getPath(), compiler);
             SortedProperties props = new SortedProperties();
             pkg.clean();
             PackageFile packageFile = pkg.getPkgFile();
@@ -88,7 +89,7 @@ public class ParserAdapter {
                 String type = null;
                 switch (el.getElementType()) {
                     case ABSTRACT_CLASS: {
-                        type = AbstractClassRole.ABSTRACT_ROLE_NAME;
+                        type = "abstract";
                         break;
                     }
                     case ENUM: {
@@ -113,7 +114,7 @@ public class ParserAdapter {
                         break;
                     }
                     default:
-                        throw new Exception("not a target " + el);
+                        throw new AssertionError("not a target " + el);
                 }
                 ClassTarget target = new ClassTarget(pkg, name, type);
                 classes.put(el, target);
@@ -144,7 +145,11 @@ public class ParserAdapter {
                         }
                     }
                     if (classes.get(from) instanceof ClassTarget) {
-                        fields.add(visibility(field) + field.getElement() + " : " + field.getIdentifier());
+                        String fieldExp = visibility(field) + field.getElement();
+                        if (field.getIdentifier() != null) {
+                            fieldExp = fieldExp + " : " + field.getIdentifier();
+                        }
+                        fields.add(fieldExp);
                     }
                 }
 
@@ -159,7 +164,13 @@ public class ParserAdapter {
                         }
                     }
                     if (classes.get(from) instanceof ClassTarget) {
-                        methods.add(visibility(method) + method.getElement() + params(method) + " : " + method.getReturnType());
+                        String methodExp;
+                        if (method.isCostructor()) {
+                            methodExp = visibility(method) + from.getElement() + params(method);
+                        } else {
+                            methodExp = visibility(method) + method.getElement() + params(method) + " : " + method.getReturnType();
+                        }
+                        methods.add(methodExp);
                     }
                 }
                 ((ClassTarget) classes.get(from)).putFields(fields);
@@ -170,7 +181,6 @@ public class ParserAdapter {
                     pkg.addDependency(implementsDep, true);
                 }
                 
-                System.out.println("classDiagram.ParserAdapter.generate()    " + from.getPointers().size());
                 for (ClassLikeElement to : from.getPointers()) {
                     Dependency uses = new UsesDependency(pkg, classes.get(from), classes.get(to));
                     if (addible(classes.get(from), classes.get(to))) {
@@ -201,7 +211,7 @@ public class ParserAdapter {
                         pkg.addTarget(dependentTarget);
                     }
             );
-        } catch (Exception ex) {
+        } catch (AssertionError ex) {
             System.err.println(ex);
         }
     }
