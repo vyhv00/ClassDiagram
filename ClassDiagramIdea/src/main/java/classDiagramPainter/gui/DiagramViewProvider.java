@@ -61,7 +61,7 @@ public class DiagramViewProvider implements FileEditorProvider, DumbAware {
                 lightFile.refresh(false, true);
                 editor.createGraph();
             } else {
-                if (editor == null && DiagramViewEditor.openable(lightFile.getPath())) {
+                if (editor == null && DiagramViewEditor.openable(virtualFile.getPath())) {
                     editor = new DiagramViewEditor(lightFile);
                     editor.openGraph();
                 }
