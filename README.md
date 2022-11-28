@@ -40,12 +40,12 @@ Pro změnu velikosti třídy stiskněte primární tlačítko myši nad okrajem 
 Rozložení diagramu se ukládá automaticky při zavření panelu s diagramem. Úpravy nelze vrátit zpět, pouze provést další úpravy do původního rozložení.
 
 ### Rozbalení a sbalení tříd
-Třídy jsou při každém otevření diagramu ve sbaleném stavu, tak se zobrazuje pouze jejich název a stereotyp. Pro zobrazení proměnných a metod lze třídu rozbalit dvojkli-kem. Při rozbalení se třída zvětší a zobrazí všechny proměnné i metody třídy. Dvojklik nad rozbalenou třídou ji zmenší zpět do původní velikosti a přestanou se zobrazovat proměnné a metody třídy.
+Třídy jsou při každém otevření diagramu ve sbaleném stavu, tak se zobrazuje pouze jejich název a stereotyp. Pro zobrazení proměnných a metod lze třídu rozbalit. Při rozbalení se třída zvětší a zobrazí všechny proměnné i metody třídy. Rozbalit a sbalit třídy lze skrze kontextové menu diagramu a jeho položky *Expand selected classes* a *Collapse selected classes*. Mimo toho lze třídy také rozbalit nebo sbalit dvojklikem na vybranou třídu nebo skupinu tříd.
+
+![save-image](readme/save-image.png)
 
 ## Export diagramu
 Diagram je možné exportovat do obrázku ve formátu PNG. Pro export diagramu do obrázku klikněte sekundárním tlačítkem myši na diagram a vyberte možnost Save as image. Po vybrání cesty a názvu souboru, klikněte na Uložit. Diagram se exportuje tak jak je aktuálně zobrazen, pokud tedy chcete mít některé třídy rozbalené, nebo naopak sbalené (viz Rozbalení a sbalení tříd) je potřeba je do tohoto stavu nejdříve uvést.
-
-![save-image](readme/save-image.png)
 
 ##	Smazání diagramu
 Pro smazání diagramu stačí smazat soubor package.bluej z vybraného balíčku. Po smazání se zneaktivní možnost *Open Class diagram* v nabídce balíčku a je pouze možné jej znovu vytvořit.

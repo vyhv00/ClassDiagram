@@ -446,7 +446,7 @@ public class ClassTarget extends DependentTarget
     }
 
     @Override
-    public void colapse() {
+    public void collapse() {
         expanded = false;
         super.setSize(regWidth, regHeight);
         super.getPackage().getEditor().moveToBack(super.getComponent());

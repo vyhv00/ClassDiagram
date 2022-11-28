@@ -251,7 +251,7 @@ public final class SelectionSet
     public void colapse(ActionEvent e) {
         for (SelectableGraphElement element : elements) {
             if(element instanceof IExpandable iExpandable) {
-                iExpandable.colapse();
+                iExpandable.collapse();
             }
         }
     }

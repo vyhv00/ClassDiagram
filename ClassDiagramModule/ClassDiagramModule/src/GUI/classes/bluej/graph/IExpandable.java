@@ -27,7 +27,7 @@ public interface IExpandable {
     /**
      * Colapse target to show basic view
      */
-    public void colapse();
+    public void collapse();
 
     /**
      * Returns whether target is expanded

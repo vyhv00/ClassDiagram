@@ -32,12 +32,12 @@ public class DiagramViewEditor extends UserDataHolderBase implements FileEditor,
     private static final String INIT_ACTION_CREATE = "DiagramViewEditor.InitAction.Create";
     private static final String INIT_ACTION_OPEN = "DiagramViewEditor.InitAction.Open";
 
-    private final VirtualFile file;
+    private final LightVirtualFile file;
     private DiagramGUI diagram;
     private String name;
 
     public DiagramViewEditor (VirtualFile file) throws IOException {
-        this.file = file;
+        this.file = (LightVirtualFile) file;
         prepareGraph();
     }
 
@@ -155,6 +155,6 @@ public class DiagramViewEditor extends UserDataHolderBase implements FileEditor,
 
     @Override
     public void update(FileSubject fileSubject) {
-        file.refresh(false, true);
+        file.getOriginalFile().refresh(false, true);
     }
 }

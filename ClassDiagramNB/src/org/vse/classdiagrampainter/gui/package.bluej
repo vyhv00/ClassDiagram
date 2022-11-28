@@ -1,0 +1,25 @@
+#BlueJ package file
+dependency1.from=WindowDiaTopComponent
+dependency1.to=WindowDiaTopComponent
+dependency1.type=AssociationDependency
+objectbench.height=705
+objectbench.width=1070
+package.baseName=org.vse.classdiagrampainter.gui
+package.editor.height=705
+package.editor.width=1070
+package.editor.x=0
+package.editor.y=0
+package.numDependencies=1
+package.numTargets=1
+package.showExtends=true
+package.showUses=true
+project.charset=UTF-8
+target1.fields=-\ fileObject\ \:\ FileObject/,/-\ path\ \:\ File/,/-\ diagram\ \:\ DiagramGUI/,/-\ windows\ \:\ HashMap<FileObject,\ WindowDiaTopComponent>
+target1.height=50
+target1.methods=-\ WindowDiaTopComponent()/,/-\ initComponents()\ \:\ void/,/+\ componentOpened()\ \:\ void/,/+\ componentClosed()\ \:\ void/,/+\ writeProperties(java.util.Properties)\ \:\ void/,/+\ readProperties(java.util.Properties)\ \:\ void/,/-\ prepareGraph(FileObject)\ \:\ void/,/-\ prepareGraph()\ \:\ void/,/+\ openGraph()\ \:\ void/,/+\ createGraph()\ \:\ void/,/+\ getPersistenceType()\ \:\ int/,/+\ getInstance(FileObject)\ \:\ WindowDiaTopComponent/,/+\ openable(String)\ \:\ boolean
+target1.name=WindowDiaTopComponent
+target1.showInterface=true
+target1.type=ClassTarget
+target1.width=170
+target1.x=30
+target1.y=30

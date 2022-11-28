@@ -32,6 +32,7 @@ import bluej.pkgmgr.target.Target;
 import bluej.pkgmgr.target.role.AbstractClassRole;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
+import java.util.Objects;
 import javax.lang.model.element.Modifier;
 import javax.tools.JavaCompiler;
 
@@ -42,6 +43,7 @@ import javax.tools.JavaCompiler;
 public class ParserAdapter {
 
     private final Package pkg;
+    private final HashSet<Rel> rels = new HashSet<>();
 
     public ParserAdapter(Package pkg) {
         this.pkg = pkg;
@@ -137,10 +139,8 @@ public class ParserAdapter {
                 LinkedHashSet<String> fields = new LinkedHashSet<>();
                 for (FieldElement field : from.getFields()) {
                     for (ClassLikeElement to : field.getPointers()) {
-                        DependentTarget fromClass = classes.get(from);
-                        DependentTarget toClass = classes.get(to);
-                        Dependency uses = new AssociationDependency(pkg, classes.get(from), classes.get(to));
-                        if(addible(fromClass, toClass)) {
+                        if (addible(from, to)) {
+                            Dependency uses = new AssociationDependency(pkg, classes.get(from), classes.get(to));
                             pkg.addDependency(uses, true);
                         }
                     }
@@ -156,10 +156,8 @@ public class ParserAdapter {
                 LinkedHashSet<String> methods = new LinkedHashSet<>();
                 for (MethodElement method : from.getMethods()) {
                     for (ClassLikeElement to : method.getPointers()) {
-                        DependentTarget fromClass = classes.get(from);
-                        DependentTarget toClass = classes.get(to);
-                        Dependency uses = new UsesDependency(pkg, classes.get(from), classes.get(to));
-                        if(addible(fromClass, toClass)){
+                        if (addible(from, to)) {
+                            Dependency uses = new UsesDependency(pkg, classes.get(from), classes.get(to));
                             pkg.addDependency(uses, true);
                         }
                     }
@@ -180,14 +178,14 @@ public class ParserAdapter {
                     Dependency implementsDep = new ImplementsDependency(pkg, classes.get(from), classes.get(to));
                     pkg.addDependency(implementsDep, true);
                 }
-                
+
                 for (ClassLikeElement to : from.getPointers()) {
-                    Dependency uses = new UsesDependency(pkg, classes.get(from), classes.get(to));
-                    if (addible(classes.get(from), classes.get(to))) {
+                    if (addible(from, to)) {
+                        Dependency uses = new UsesDependency(pkg, classes.get(from), classes.get(to));
                         pkg.addDependency(uses, true);
                     }
                 }
-                
+
                 if (from.getExtension() != null) {
                     Dependency extendsDep = new ExtendsDependency(pkg, classes.get(from), classes.get(from.getExtension()));
                     pkg.addDependency(extendsDep, true);
@@ -241,14 +239,43 @@ public class ParserAdapter {
         return params;
     }
 
-    private boolean addible(Vertex fromClass, Vertex toClass) {
-        for (Iterator<? extends Edge> it = pkg.getEdges(); it.hasNext();) {
-            Edge edge = it.next();
-            if (edge.from.equals(fromClass) && edge.to.equals(toClass)) {
+    private boolean addible(ClassLikeElement fromClass, ClassLikeElement toClass) {
+        Rel rel = new Rel(fromClass, toClass);
+        return rels.add(rel);
+    }
+    
+    private class Rel{
+        private final ClassLikeElement from;
+        private final ClassLikeElement to;
+
+        public Rel(ClassLikeElement from, ClassLikeElement to) {
+            this.from = from;
+            this.to = to;
+        }
+
+        @Override
+        public int hashCode() {
+            int hash = 3;
+            return hash;
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            if (this == obj) {
+                return true;
+            }
+            if (obj == null) {
                 return false;
             }
-        }
-        return true;
+            if (getClass() != obj.getClass()) {
+                return false;
+            }
+            final Rel other = (Rel) obj;
+            if (!Objects.equals(this.from, other.from)) {
+                return false;
+            }
+            return Objects.equals(this.to, other.to);
+        }        
     }
 
 //    private void testFiller() {

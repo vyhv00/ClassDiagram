@@ -193,30 +193,4 @@ public class PackageRelations {
             }
         });
     }
-
-    @Override
-    public int hashCode() {
-        int hash = 7;
-        hash = 61 * hash + Objects.hashCode(this.packageName);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final PackageRelations other = (PackageRelations) obj;
-        if (!Objects.equals(this.packageName, other.packageName)) {
-            return false;
-        }
-        return true;
-    }
-
 }
