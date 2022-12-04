@@ -2,11 +2,11 @@
 dependency1.from=WindowDiaTopComponent
 dependency1.to=WindowDiaTopComponent
 dependency1.type=AssociationDependency
-objectbench.height=705
-objectbench.width=1070
+objectbench.height=0
+objectbench.width=0
 package.baseName=org.vse.classdiagrampainter.gui
-package.editor.height=705
-package.editor.width=1070
+package.editor.height=0
+package.editor.width=0
 package.editor.x=0
 package.editor.y=0
 package.numDependencies=1

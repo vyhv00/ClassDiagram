@@ -17,7 +17,7 @@ import org.openide.filesystems.FileUtil;
 import org.openide.util.Exceptions;
 import org.openide.windows.TopComponent;
 import org.openide.util.NbBundle.Messages;
-import classDiagram.DiagramGUI;
+import graphProvider.DiagramGUI;
 import javax.tools.ToolProvider;
 
 /**

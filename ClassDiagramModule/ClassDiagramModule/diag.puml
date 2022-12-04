@@ -1,0 +1,545 @@
+@startuml
+abstract class bluej.graph.Edge
+abstract class bluej.graph.Graph
+abstract class bluej.graph.Vertex
+abstract class bluej.pkgmgr.dependency.Dependency
+abstract class bluej.pkgmgr.target.DependentTarget
+abstract class bluej.pkgmgr.target.Target
+abstract class bluej.pkgmgr.target.role.ClassRole
+abstract class bluej.pkgmgr.target.role.ClsMemberRecorderRole
+annotation java.lang.Override
+annotation java.lang.SuppressWarnings
+class bluej.Config
+class bluej.MultiIterator
+class bluej.PropParser
+class bluej.Properties
+class bluej.SortedProperties
+class bluej.Utility
+class bluej.graph.GraphEditor
+class bluej.graph.Marquee
+class bluej.graph.MarqueePainter
+class bluej.graph.RubberBand
+class bluej.graph.SelectionController
+class bluej.graph.SelectionSet
+class bluej.graph.TraverseStrategyImpl
+class bluej.pkgmgr.BlueJPackageFile
+class bluej.pkgmgr.LayoutComparer
+class bluej.pkgmgr.Package
+class bluej.pkgmgr.PackageEditor
+class bluej.pkgmgr.PackageFileFactory
+class bluej.pkgmgr.PackagePrintManager
+class bluej.pkgmgr.PackagePrinter
+class bluej.pkgmgr.PkgMgrFrame
+class bluej.pkgmgr.dependency.AssociationDependency
+class bluej.pkgmgr.dependency.ContainmentDependency
+class bluej.pkgmgr.dependency.Dependency.Line
+class bluej.pkgmgr.dependency.ExtendsDependency
+class bluej.pkgmgr.dependency.ImplementsDependency
+class bluej.pkgmgr.dependency.UsesDependency
+class bluej.pkgmgr.graphPainter.AssociationDependencyPainter
+class bluej.pkgmgr.graphPainter.ClassTargetPainter
+class bluej.pkgmgr.graphPainter.ContainmentDependencyPainter
+class bluej.pkgmgr.graphPainter.ExtendsDependencyPainter
+class bluej.pkgmgr.graphPainter.GraphPainterStdImpl
+class bluej.pkgmgr.graphPainter.ImplementsDependencyPainter
+class bluej.pkgmgr.graphPainter.UsesDependencyPainter
+class bluej.pkgmgr.target.ClassTarget
+class bluej.pkgmgr.target.TargetCollection
+class bluej.pkgmgr.target.role.AbstractClassRole
+class bluej.pkgmgr.target.role.CrateClassRole
+class bluej.pkgmgr.target.role.EnumClassRole
+class bluej.pkgmgr.target.role.InterfaceClassRole
+class bluej.pkgmgr.target.role.LibraryClassRole
+class bluej.pkgmgr.target.role.RecordClassRole
+class bluej.pkgmgr.target.role.RoleUtils
+class bluej.pkgmgr.target.role.SingletonClassRole
+class bluej.pkgmgr.target.role.StdClassRole
+class bluej.pkgmgr.target.role.UnitTestClassRole
+class classDiagram.DiagramGUI
+class classDiagram.ParserAdapter
+class diagramParser.PackageParser
+class diagramParser.PackageRelations
+class elements.ClassElement
+class elements.ClassLikeElement
+class elements.FieldElement
+class elements.IDiagramElement
+class elements.MethodElement
+class java.awt.AlphaComposite
+class java.awt.BasicStroke
+class java.awt.BorderLayout
+class java.awt.Color
+class java.awt.Component
+class java.awt.Composite
+class java.awt.Cursor
+class java.awt.Dimension
+class java.awt.Font
+class java.awt.FontMetrics
+class java.awt.GradientPaint
+class java.awt.Graphics
+class java.awt.Graphics2D
+class java.awt.Paint
+class java.awt.Point
+class java.awt.Rectangle
+class java.awt.RenderingHints
+class java.awt.Shape
+class java.awt.Stroke
+class java.awt.Toolkit
+class java.awt.event.ActionEvent
+class java.awt.event.FocusEvent
+class java.awt.event.InputEvent
+class java.awt.event.KeyEvent
+class java.awt.event.MouseAdapter
+class java.awt.event.MouseEvent
+class java.awt.geom.Area
+class java.awt.image.BufferedImage
+class java.awt.print.PageFormat
+class java.awt.print.PrinterJob
+class java.io.File
+class java.io.FileInputStream
+class java.io.FileOutputStream
+class java.io.IOException
+class java.lang.Thread
+class java.net.MalformedURLException
+class java.text.DateFormat
+class java.util.ArrayList
+class java.util.Arrays
+class java.util.Date
+class java.util.HashMap
+class java.util.HashSet
+class java.util.LinkedHashMap
+class java.util.LinkedHashSet
+class java.util.LinkedList
+class java.util.List
+class java.util.Map
+class java.util.Map.Entry
+class java.util.Objects
+class java.util.Properties
+class java.util.Set
+class java.util.logging.Level
+class java.util.logging.Logger
+class javax.accessibility.Accessible
+class javax.accessibility.AccessibleContext
+class javax.accessibility.AccessibleRole
+class javax.imageio.ImageIO
+class javax.lang.model.element.Modifier
+class javax.swing.JComponent
+class javax.swing.JComponent.AccessibleJComponent
+class javax.swing.JFileChooser
+class javax.swing.JLayeredPane
+class javax.swing.JMenuItem
+class javax.swing.JPanel
+class javax.swing.JPopupMenu
+class javax.swing.JScrollPane
+class javax.swing.KeyStroke
+class javax.swing.SwingUtilities
+class javax.swing.border.BevelBorder
+class javax.swing.border.Border
+class javax.swing.border.CompoundBorder
+class javax.swing.border.EmptyBorder
+class javax.swing.border.LineBorder
+class javax.swing.filechooser.FileNameExtensionFilter
+class javax.tools.JavaCompiler
+enum bluej.pkgmgr.dependency.Type
+interface bluej.graph.GraphElement
+interface bluej.graph.GraphListener
+interface bluej.graph.GraphPainter
+interface bluej.graph.IExpandable
+interface bluej.graph.Moveable
+interface bluej.graph.Selectable
+interface bluej.graph.SelectableGraphElement
+interface bluej.graph.TraverseStrategy
+interface bluej.pkgmgr.PackageEditorListener
+interface bluej.pkgmgr.PackageFile
+interface bluej.pkgmgr.Printable
+interface bluej.pkgmgr.graphPainter.DependencyPainter
+interface classDiagram.fileCreatedListener.FileListener
+interface classDiagram.fileCreatedListener.FileSubject
+interface java.awt.event.FocusListener
+interface java.awt.event.MouseListener
+interface java.awt.event.MouseMotionListener
+interface java.lang.Comparable
+interface java.util.Comparator
+interface java.util.EventListener
+interface java.util.Iterator
+bluej.graph.Edge ..> java.awt.event.MouseEvent
+bluej.graph.Edge --|> bluej.graph.SelectableGraphElement
+bluej.graph.Graph ..> java.awt.Dimension
+bluej.graph.Graph ..> java.awt.Rectangle
+bluej.graph.Graph ..> java.awt.geom.Area
+bluej.graph.Graph ..> java.util.ArrayList
+bluej.graph.Graph ..> java.util.List
+bluej.graph.Graph ..> java.util.Iterator
+bluej.graph.Vertex ..> java.lang.Override
+bluej.graph.Vertex ..> bluej.pkgmgr.graphPainter.ClassTargetPainter
+bluej.graph.Vertex ..> bluej.pkgmgr.target.ClassTarget
+bluej.graph.Vertex ..> java.awt.event.MouseEvent
+bluej.graph.Vertex ..> javax.accessibility.Accessible
+bluej.graph.Vertex ..> javax.accessibility.AccessibleContext
+bluej.graph.Vertex ..> javax.accessibility.AccessibleRole
+bluej.graph.Vertex ..> javax.swing.JComponent
+bluej.graph.Vertex ..> javax.swing.JComponent.AccessibleJComponent
+bluej.graph.Vertex --|> bluej.graph.SelectableGraphElement
+bluej.pkgmgr.dependency.Dependency --|> bluej.graph.Edge
+bluej.pkgmgr.dependency.Dependency ..> bluej.pkgmgr.target.DependentTarget
+bluej.pkgmgr.dependency.Dependency ..> java.lang.Override
+bluej.pkgmgr.dependency.Dependency ..> bluej.pkgmgr.Package
+bluej.pkgmgr.dependency.Dependency ..> java.awt.Point
+bluej.pkgmgr.dependency.Dependency ..> java.awt.Rectangle
+bluej.pkgmgr.dependency.Dependency ..> java.util.Properties
+bluej.pkgmgr.target.DependentTarget ..> bluej.pkgmgr.dependency.Dependency
+bluej.pkgmgr.target.DependentTarget --|> bluej.pkgmgr.target.Target
+bluej.pkgmgr.target.DependentTarget ..> java.lang.Override
+bluej.pkgmgr.target.DependentTarget ..> bluej.MultiIterator
+bluej.pkgmgr.target.DependentTarget ..> bluej.pkgmgr.LayoutComparer
+bluej.pkgmgr.target.DependentTarget ..> bluej.pkgmgr.Package
+bluej.pkgmgr.target.DependentTarget ..> bluej.pkgmgr.dependency.ExtendsDependency
+bluej.pkgmgr.target.DependentTarget ..> bluej.pkgmgr.dependency.ImplementsDependency
+bluej.pkgmgr.target.DependentTarget ..> bluej.pkgmgr.dependency.UsesDependency
+bluej.pkgmgr.target.DependentTarget ..> java.util.List
+bluej.pkgmgr.target.DependentTarget ..> bluej.graph.Moveable
+bluej.pkgmgr.target.Target --|> bluej.graph.Vertex
+bluej.pkgmgr.target.Target ..> java.lang.Override
+bluej.pkgmgr.target.Target ..> bluej.graph.GraphEditor
+bluej.pkgmgr.target.Target ..> bluej.pkgmgr.Package
+bluej.pkgmgr.target.Target ..> java.util.Properties
+bluej.pkgmgr.target.Target ..> bluej.graph.IExpandable
+bluej.pkgmgr.target.Target --|> java.lang.Comparable
+bluej.pkgmgr.target.role.ClassRole ..> bluej.pkgmgr.target.ClassTarget
+bluej.pkgmgr.target.role.ClassRole ..> java.awt.Color
+bluej.pkgmgr.target.role.ClassRole ..> java.awt.GradientPaint
+bluej.pkgmgr.target.role.ClassRole ..> java.awt.Paint
+bluej.pkgmgr.target.role.ClsMemberRecorderRole --|> bluej.pkgmgr.target.role.ClassRole
+bluej.Config ..> java.awt.Color
+bluej.Config ..> java.awt.Dimension
+bluej.Config ..> java.awt.Font
+bluej.Config ..> java.awt.Point
+bluej.Config ..> java.awt.Rectangle
+bluej.Config ..> java.awt.Toolkit
+bluej.Config ..> java.awt.event.InputEvent
+bluej.Config ..> java.awt.event.KeyEvent
+bluej.Config ..> java.util.Properties
+bluej.Config ..> javax.swing.KeyStroke
+bluej.Config ..> javax.swing.border.BevelBorder
+bluej.Config ..> javax.swing.border.Border
+bluej.Config ..> javax.swing.border.CompoundBorder
+bluej.Config ..> javax.swing.border.EmptyBorder
+bluej.Config ..> javax.swing.border.LineBorder
+bluej.MultiIterator ..> java.util.List
+bluej.MultiIterator --|> java.util.Iterator
+bluej.PropParser ..> java.io.File
+bluej.PropParser ..> java.net.MalformedURLException
+bluej.PropParser ..> java.util.Properties
+bluej.SortedProperties ..> java.lang.SuppressWarnings
+bluej.SortedProperties --|> bluej.Properties
+bluej.Utility ..> java.awt.FontMetrics
+bluej.Utility ..> java.awt.Graphics
+bluej.Utility ..> java.awt.Shape
+bluej.Utility ..> java.util.ArrayList
+bluej.Utility ..> java.util.HashSet
+bluej.Utility ..> java.util.List
+bluej.Utility ..> java.util.Set
+bluej.graph.GraphEditor ..> java.lang.Override
+bluej.graph.GraphEditor ..> bluej.pkgmgr.Package
+bluej.graph.GraphEditor ..> bluej.pkgmgr.graphPainter.GraphPainterStdImpl
+bluej.graph.GraphEditor ..> bluej.pkgmgr.target.ClassTarget
+bluej.graph.GraphEditor ..> java.awt.Color
+bluej.graph.GraphEditor ..> java.awt.Component
+bluej.graph.GraphEditor ..> java.awt.Cursor
+bluej.graph.GraphEditor ..> java.awt.Dimension
+bluej.graph.GraphEditor ..> java.awt.Font
+bluej.graph.GraphEditor ..> java.awt.Graphics
+bluej.graph.GraphEditor ..> java.awt.Graphics2D
+bluej.graph.GraphEditor ..> java.awt.event.FocusEvent
+bluej.graph.GraphEditor ..> java.awt.event.MouseAdapter
+bluej.graph.GraphEditor ..> java.awt.event.MouseEvent
+bluej.graph.GraphEditor ..> java.awt.image.BufferedImage
+bluej.graph.GraphEditor ..> java.io.File
+bluej.graph.GraphEditor ..> java.io.IOException
+bluej.graph.GraphEditor ..> java.util.HashMap
+bluej.graph.GraphEditor ..> java.util.HashSet
+bluej.graph.GraphEditor ..> java.util.Map.Entry
+bluej.graph.GraphEditor ..> java.util.logging.Level
+bluej.graph.GraphEditor ..> java.util.logging.Logger
+bluej.graph.GraphEditor ..> javax.imageio.ImageIO
+bluej.graph.GraphEditor ..> javax.swing.JFileChooser
+bluej.graph.GraphEditor --|> javax.swing.JLayeredPane
+bluej.graph.GraphEditor ..> javax.swing.JMenuItem
+bluej.graph.GraphEditor ..> javax.swing.JPopupMenu
+bluej.graph.GraphEditor ..> javax.swing.SwingUtilities
+bluej.graph.GraphEditor ..> javax.swing.filechooser.FileNameExtensionFilter
+bluej.graph.GraphEditor --|> bluej.graph.GraphListener
+bluej.graph.GraphEditor ..> classDiagram.fileCreatedListener.FileListener
+bluej.graph.GraphEditor --|> classDiagram.fileCreatedListener.FileSubject
+bluej.graph.GraphEditor ..> java.awt.event.FocusListener
+bluej.graph.GraphEditor --|> java.awt.event.MouseMotionListener
+bluej.graph.GraphEditor ..> java.util.Iterator
+bluej.graph.MarqueePainter ..> java.awt.Graphics2D
+bluej.graph.RubberBand ..> java.awt.Point
+bluej.graph.SelectionController ..> bluej.pkgmgr.dependency.Dependency
+bluej.graph.SelectionController ..> bluej.pkgmgr.target.DependentTarget
+bluej.graph.SelectionController ..> bluej.pkgmgr.target.Target
+bluej.graph.SelectionController ..> java.lang.Override
+bluej.graph.SelectionController ..> java.awt.Rectangle
+bluej.graph.SelectionController ..> java.awt.event.ActionEvent
+bluej.graph.SelectionController ..> java.awt.event.FocusEvent
+bluej.graph.SelectionController ..> java.awt.event.KeyEvent
+bluej.graph.SelectionController ..> java.awt.event.MouseEvent
+bluej.graph.SelectionController ..> java.util.List
+bluej.graph.SelectionController --|> java.awt.event.FocusListener
+bluej.graph.SelectionController --|> java.awt.event.MouseListener
+bluej.graph.SelectionController --|> java.awt.event.MouseMotionListener
+bluej.graph.SelectionController ..> java.util.Iterator
+bluej.graph.SelectionSet ..> bluej.pkgmgr.target.ClassTarget
+bluej.graph.SelectionSet ..> java.awt.Point
+bluej.graph.SelectionSet ..> java.awt.event.ActionEvent
+bluej.graph.SelectionSet ..> java.awt.event.MouseEvent
+bluej.graph.SelectionSet ..> java.util.HashSet
+bluej.graph.SelectionSet ..> java.util.Set
+bluej.graph.TraverseStrategyImpl ..> java.awt.event.KeyEvent
+bluej.graph.TraverseStrategyImpl --|> bluej.graph.TraverseStrategy
+bluej.graph.TraverseStrategyImpl ..> java.util.Iterator
+bluej.pkgmgr.BlueJPackageFile ..> java.io.File
+bluej.pkgmgr.BlueJPackageFile ..> java.io.FileInputStream
+bluej.pkgmgr.BlueJPackageFile ..> java.io.FileOutputStream
+bluej.pkgmgr.BlueJPackageFile ..> java.io.IOException
+bluej.pkgmgr.BlueJPackageFile ..> java.util.Properties
+bluej.pkgmgr.BlueJPackageFile --|> bluej.pkgmgr.PackageFile
+bluej.pkgmgr.LayoutComparer ..> bluej.pkgmgr.dependency.Dependency
+bluej.pkgmgr.LayoutComparer ..> bluej.pkgmgr.target.DependentTarget
+bluej.pkgmgr.LayoutComparer --|> java.util.Comparator
+bluej.pkgmgr.Package ..> bluej.graph.Edge
+bluej.pkgmgr.Package --|> bluej.graph.Graph
+bluej.pkgmgr.Package ..> bluej.pkgmgr.dependency.Dependency
+bluej.pkgmgr.Package ..> bluej.pkgmgr.target.DependentTarget
+bluej.pkgmgr.Package ..> bluej.pkgmgr.target.Target
+bluej.pkgmgr.Package ..> java.lang.Override
+bluej.pkgmgr.Package ..> bluej.MultiIterator
+bluej.pkgmgr.Package ..> bluej.SortedProperties
+bluej.pkgmgr.Package ..> bluej.pkgmgr.dependency.AssociationDependency
+bluej.pkgmgr.Package ..> bluej.pkgmgr.dependency.ContainmentDependency
+bluej.pkgmgr.Package ..> bluej.pkgmgr.dependency.ExtendsDependency
+bluej.pkgmgr.Package ..> bluej.pkgmgr.dependency.ImplementsDependency
+bluej.pkgmgr.Package ..> bluej.pkgmgr.dependency.UsesDependency
+bluej.pkgmgr.Package ..> bluej.pkgmgr.target.ClassTarget
+bluej.pkgmgr.Package ..> bluej.pkgmgr.target.TargetCollection
+bluej.pkgmgr.Package ..> java.io.File
+bluej.pkgmgr.Package ..> java.io.IOException
+bluej.pkgmgr.Package ..> java.util.ArrayList
+bluej.pkgmgr.Package ..> java.util.HashMap
+bluej.pkgmgr.Package ..> java.util.HashSet
+bluej.pkgmgr.Package ..> java.util.LinkedList
+bluej.pkgmgr.Package ..> java.util.List
+bluej.pkgmgr.Package ..> java.util.Map
+bluej.pkgmgr.Package ..> java.util.Properties
+bluej.pkgmgr.Package ..> java.util.Set
+bluej.pkgmgr.Package ..> java.util.Iterator
+bluej.pkgmgr.PackageEditor ..> java.lang.Override
+bluej.pkgmgr.PackageEditor --|> bluej.graph.GraphEditor
+bluej.pkgmgr.PackageFileFactory ..> java.io.File
+bluej.pkgmgr.PackagePrintManager ..> java.awt.print.PageFormat
+bluej.pkgmgr.PackagePrintManager ..> java.awt.print.PrinterJob
+bluej.pkgmgr.PackagePrintManager --|> java.lang.Thread
+bluej.pkgmgr.PackagePrinter ..> bluej.Utility
+bluej.pkgmgr.PackagePrinter --|> java.lang.Thread
+bluej.pkgmgr.PackagePrinter ..> java.text.DateFormat
+bluej.pkgmgr.PackagePrinter ..> java.util.Date
+bluej.pkgmgr.PackagePrinter --|> bluej.pkgmgr.Printable
+bluej.pkgmgr.PkgMgrFrame ..> java.lang.Override
+bluej.pkgmgr.PkgMgrFrame ..> java.awt.BorderLayout
+bluej.pkgmgr.PkgMgrFrame ..> java.awt.Color
+bluej.pkgmgr.PkgMgrFrame ..> java.awt.Dimension
+bluej.pkgmgr.PkgMgrFrame ..> java.awt.Font
+bluej.pkgmgr.PkgMgrFrame ..> java.awt.Point
+bluej.pkgmgr.PkgMgrFrame ..> java.awt.event.MouseEvent
+bluej.pkgmgr.PkgMgrFrame ..> java.util.HashSet
+bluej.pkgmgr.PkgMgrFrame ..> java.util.Properties
+bluej.pkgmgr.PkgMgrFrame --|> javax.swing.JPanel
+bluej.pkgmgr.PkgMgrFrame ..> javax.swing.JScrollPane
+bluej.pkgmgr.PkgMgrFrame --|> bluej.pkgmgr.PackageEditorListener
+bluej.pkgmgr.PkgMgrFrame ..> classDiagram.fileCreatedListener.FileListener
+bluej.pkgmgr.PkgMgrFrame --|> classDiagram.fileCreatedListener.FileSubject
+bluej.pkgmgr.PkgMgrFrame --|> java.awt.event.MouseListener
+bluej.pkgmgr.dependency.AssociationDependency ..> bluej.pkgmgr.target.DependentTarget
+bluej.pkgmgr.dependency.AssociationDependency ..> java.lang.Override
+bluej.pkgmgr.dependency.AssociationDependency ..> bluej.pkgmgr.Package
+bluej.pkgmgr.dependency.AssociationDependency --|> bluej.pkgmgr.dependency.UsesDependency
+bluej.pkgmgr.dependency.AssociationDependency ..> java.util.Properties
+bluej.pkgmgr.dependency.ContainmentDependency ..> bluej.pkgmgr.target.DependentTarget
+bluej.pkgmgr.dependency.ContainmentDependency ..> java.lang.Override
+bluej.pkgmgr.dependency.ContainmentDependency ..> bluej.pkgmgr.Package
+bluej.pkgmgr.dependency.ContainmentDependency --|> bluej.pkgmgr.dependency.UsesDependency
+bluej.pkgmgr.dependency.ContainmentDependency ..> java.util.Properties
+bluej.pkgmgr.dependency.ExtendsDependency --|> bluej.pkgmgr.dependency.Dependency
+bluej.pkgmgr.dependency.ExtendsDependency ..> bluej.pkgmgr.target.DependentTarget
+bluej.pkgmgr.dependency.ExtendsDependency ..> java.lang.Override
+bluej.pkgmgr.dependency.ExtendsDependency ..> bluej.pkgmgr.Package
+bluej.pkgmgr.dependency.ExtendsDependency ..> java.util.Properties
+bluej.pkgmgr.dependency.ExtendsDependency ..> bluej.pkgmgr.dependency.Type
+bluej.pkgmgr.dependency.ImplementsDependency --|> bluej.pkgmgr.dependency.Dependency
+bluej.pkgmgr.dependency.ImplementsDependency ..> bluej.pkgmgr.target.DependentTarget
+bluej.pkgmgr.dependency.ImplementsDependency ..> java.lang.Override
+bluej.pkgmgr.dependency.ImplementsDependency ..> bluej.pkgmgr.Package
+bluej.pkgmgr.dependency.ImplementsDependency ..> java.util.Properties
+bluej.pkgmgr.dependency.ImplementsDependency ..> bluej.pkgmgr.dependency.Type
+bluej.pkgmgr.dependency.UsesDependency --|> bluej.pkgmgr.dependency.Dependency
+bluej.pkgmgr.dependency.UsesDependency ..> bluej.pkgmgr.target.DependentTarget
+bluej.pkgmgr.dependency.UsesDependency ..> java.lang.Override
+bluej.pkgmgr.dependency.UsesDependency ..> bluej.pkgmgr.Package
+bluej.pkgmgr.dependency.UsesDependency ..> java.util.Properties
+bluej.pkgmgr.dependency.UsesDependency ..> bluej.pkgmgr.dependency.Type
+bluej.pkgmgr.graphPainter.AssociationDependencyPainter ..> bluej.pkgmgr.dependency.Dependency
+bluej.pkgmgr.graphPainter.AssociationDependencyPainter ..> bluej.graph.RubberBand
+bluej.pkgmgr.graphPainter.AssociationDependencyPainter ..> bluej.pkgmgr.dependency.AssociationDependency
+bluej.pkgmgr.graphPainter.AssociationDependencyPainter ..> bluej.pkgmgr.dependency.ContainmentDependency
+bluej.pkgmgr.graphPainter.AssociationDependencyPainter --|> bluej.pkgmgr.graphPainter.UsesDependencyPainter
+bluej.pkgmgr.graphPainter.AssociationDependencyPainter ..> java.awt.BasicStroke
+bluej.pkgmgr.graphPainter.AssociationDependencyPainter ..> java.awt.Color
+bluej.pkgmgr.graphPainter.AssociationDependencyPainter ..> java.awt.Graphics2D
+bluej.pkgmgr.graphPainter.AssociationDependencyPainter ..> java.awt.Point
+bluej.pkgmgr.graphPainter.AssociationDependencyPainter ..> java.awt.RenderingHints
+bluej.pkgmgr.graphPainter.AssociationDependencyPainter ..> java.awt.Stroke
+bluej.pkgmgr.graphPainter.AssociationDependencyPainter --|> bluej.pkgmgr.graphPainter.DependencyPainter
+bluej.pkgmgr.graphPainter.ClassTargetPainter ..> bluej.pkgmgr.target.Target
+bluej.pkgmgr.graphPainter.ClassTargetPainter ..> bluej.Utility
+bluej.pkgmgr.graphPainter.ClassTargetPainter ..> bluej.pkgmgr.target.ClassTarget
+bluej.pkgmgr.graphPainter.ClassTargetPainter ..> java.awt.AlphaComposite
+bluej.pkgmgr.graphPainter.ClassTargetPainter ..> java.awt.Color
+bluej.pkgmgr.graphPainter.ClassTargetPainter ..> java.awt.Composite
+bluej.pkgmgr.graphPainter.ClassTargetPainter ..> java.awt.Font
+bluej.pkgmgr.graphPainter.ClassTargetPainter ..> java.awt.Graphics2D
+bluej.pkgmgr.graphPainter.ClassTargetPainter ..> java.util.Iterator
+bluej.pkgmgr.graphPainter.ContainmentDependencyPainter ..> bluej.pkgmgr.dependency.Dependency
+bluej.pkgmgr.graphPainter.ContainmentDependencyPainter ..> bluej.pkgmgr.dependency.ContainmentDependency
+bluej.pkgmgr.graphPainter.ContainmentDependencyPainter --|> bluej.pkgmgr.graphPainter.UsesDependencyPainter
+bluej.pkgmgr.graphPainter.ContainmentDependencyPainter ..> java.awt.BasicStroke
+bluej.pkgmgr.graphPainter.ContainmentDependencyPainter ..> java.awt.Color
+bluej.pkgmgr.graphPainter.ContainmentDependencyPainter ..> java.awt.Graphics2D
+bluej.pkgmgr.graphPainter.ContainmentDependencyPainter ..> java.awt.RenderingHints
+bluej.pkgmgr.graphPainter.ContainmentDependencyPainter ..> java.awt.Stroke
+bluej.pkgmgr.graphPainter.ContainmentDependencyPainter --|> bluej.pkgmgr.graphPainter.DependencyPainter
+bluej.pkgmgr.graphPainter.ExtendsDependencyPainter ..> bluej.pkgmgr.dependency.Dependency
+bluej.pkgmgr.graphPainter.ExtendsDependencyPainter ..> bluej.graph.RubberBand
+bluej.pkgmgr.graphPainter.ExtendsDependencyPainter ..> bluej.pkgmgr.dependency.Dependency.Line
+bluej.pkgmgr.graphPainter.ExtendsDependencyPainter ..> bluej.pkgmgr.dependency.ExtendsDependency
+bluej.pkgmgr.graphPainter.ExtendsDependencyPainter --|> bluej.pkgmgr.graphPainter.DependencyPainter
+bluej.pkgmgr.graphPainter.GraphPainterStdImpl ..> bluej.graph.Edge
+bluej.pkgmgr.graphPainter.GraphPainterStdImpl ..> bluej.graph.Graph
+bluej.pkgmgr.graphPainter.GraphPainterStdImpl ..> bluej.graph.Vertex
+bluej.pkgmgr.graphPainter.GraphPainterStdImpl ..> bluej.pkgmgr.dependency.Dependency
+bluej.pkgmgr.graphPainter.GraphPainterStdImpl ..> bluej.graph.GraphEditor
+bluej.pkgmgr.graphPainter.GraphPainterStdImpl ..> bluej.pkgmgr.dependency.AssociationDependency
+bluej.pkgmgr.graphPainter.GraphPainterStdImpl ..> bluej.pkgmgr.dependency.ContainmentDependency
+bluej.pkgmgr.graphPainter.GraphPainterStdImpl ..> bluej.pkgmgr.dependency.ExtendsDependency
+bluej.pkgmgr.graphPainter.GraphPainterStdImpl ..> bluej.pkgmgr.dependency.ImplementsDependency
+bluej.pkgmgr.graphPainter.GraphPainterStdImpl ..> bluej.pkgmgr.dependency.UsesDependency
+bluej.pkgmgr.graphPainter.GraphPainterStdImpl ..> bluej.pkgmgr.target.ClassTarget
+bluej.pkgmgr.graphPainter.GraphPainterStdImpl --|> bluej.graph.GraphPainter
+bluej.pkgmgr.graphPainter.GraphPainterStdImpl ..> bluej.graph.Moveable
+bluej.pkgmgr.graphPainter.GraphPainterStdImpl ..> java.util.Iterator
+bluej.pkgmgr.graphPainter.ImplementsDependencyPainter ..> bluej.pkgmgr.dependency.Dependency
+bluej.pkgmgr.graphPainter.ImplementsDependencyPainter ..> bluej.pkgmgr.dependency.ImplementsDependency
+bluej.pkgmgr.graphPainter.ImplementsDependencyPainter ..> java.awt.Graphics2D
+bluej.pkgmgr.graphPainter.ImplementsDependencyPainter --|> bluej.pkgmgr.graphPainter.DependencyPainter
+bluej.pkgmgr.graphPainter.UsesDependencyPainter ..> bluej.pkgmgr.dependency.Dependency
+bluej.pkgmgr.graphPainter.UsesDependencyPainter ..> bluej.graph.RubberBand
+bluej.pkgmgr.graphPainter.UsesDependencyPainter ..> bluej.pkgmgr.dependency.UsesDependency
+bluej.pkgmgr.graphPainter.UsesDependencyPainter ..> java.awt.BasicStroke
+bluej.pkgmgr.graphPainter.UsesDependencyPainter ..> java.awt.Color
+bluej.pkgmgr.graphPainter.UsesDependencyPainter ..> java.awt.Graphics2D
+bluej.pkgmgr.graphPainter.UsesDependencyPainter ..> java.awt.Point
+bluej.pkgmgr.graphPainter.UsesDependencyPainter ..> java.awt.RenderingHints
+bluej.pkgmgr.graphPainter.UsesDependencyPainter ..> java.awt.Stroke
+bluej.pkgmgr.graphPainter.UsesDependencyPainter --|> bluej.pkgmgr.graphPainter.DependencyPainter
+bluej.pkgmgr.target.ClassTarget --|> bluej.pkgmgr.target.DependentTarget
+bluej.pkgmgr.target.ClassTarget ..> bluej.pkgmgr.target.Target
+bluej.pkgmgr.target.ClassTarget ..> bluej.pkgmgr.target.role.ClassRole
+bluej.pkgmgr.target.ClassTarget ..> java.lang.Override
+bluej.pkgmgr.target.ClassTarget ..> bluej.Utility
+bluej.pkgmgr.target.ClassTarget ..> bluej.pkgmgr.Package
+bluej.pkgmgr.target.ClassTarget ..> bluej.pkgmgr.graphPainter.ClassTargetPainter
+bluej.pkgmgr.target.ClassTarget ..> bluej.pkgmgr.target.role.AbstractClassRole
+bluej.pkgmgr.target.ClassTarget ..> bluej.pkgmgr.target.role.EnumClassRole
+bluej.pkgmgr.target.ClassTarget ..> bluej.pkgmgr.target.role.InterfaceClassRole
+bluej.pkgmgr.target.ClassTarget ..> bluej.pkgmgr.target.role.RecordClassRole
+bluej.pkgmgr.target.ClassTarget ..> bluej.pkgmgr.target.role.StdClassRole
+bluej.pkgmgr.target.ClassTarget ..> bluej.pkgmgr.target.role.UnitTestClassRole
+bluej.pkgmgr.target.ClassTarget ..> java.awt.Font
+bluej.pkgmgr.target.ClassTarget ..> java.awt.Graphics
+bluej.pkgmgr.target.ClassTarget ..> java.awt.Graphics2D
+bluej.pkgmgr.target.ClassTarget ..> java.awt.Paint
+bluej.pkgmgr.target.ClassTarget ..> java.awt.event.MouseEvent
+bluej.pkgmgr.target.ClassTarget ..> java.util.Arrays
+bluej.pkgmgr.target.ClassTarget ..> java.util.LinkedHashSet
+bluej.pkgmgr.target.ClassTarget ..> java.util.Properties
+bluej.pkgmgr.target.ClassTarget ..> java.util.Set
+bluej.pkgmgr.target.ClassTarget ..> javax.swing.JComponent
+bluej.pkgmgr.target.ClassTarget --|> bluej.graph.IExpandable
+bluej.pkgmgr.target.ClassTarget --|> bluej.graph.Moveable
+bluej.pkgmgr.target.ClassTarget ..> java.util.Iterator
+bluej.pkgmgr.target.role.AbstractClassRole --|> bluej.pkgmgr.target.role.ClsMemberRecorderRole
+bluej.pkgmgr.target.role.CrateClassRole --|> bluej.pkgmgr.target.role.StdClassRole
+bluej.pkgmgr.target.role.CrateClassRole ..> java.awt.Paint
+bluej.pkgmgr.target.role.EnumClassRole --|> bluej.pkgmgr.target.role.ClsMemberRecorderRole
+bluej.pkgmgr.target.role.InterfaceClassRole --|> bluej.pkgmgr.target.role.ClsMemberRecorderRole
+bluej.pkgmgr.target.role.LibraryClassRole --|> bluej.pkgmgr.target.role.StdClassRole
+bluej.pkgmgr.target.role.RecordClassRole --|> bluej.pkgmgr.target.role.ClsMemberRecorderRole
+bluej.pkgmgr.target.role.SingletonClassRole --|> bluej.pkgmgr.target.role.StdClassRole
+bluej.pkgmgr.target.role.SingletonClassRole ..> java.awt.Paint
+bluej.pkgmgr.target.role.StdClassRole --|> bluej.pkgmgr.target.role.ClsMemberRecorderRole
+bluej.pkgmgr.target.role.UnitTestClassRole --|> bluej.pkgmgr.target.role.ClsMemberRecorderRole
+bluej.pkgmgr.target.role.UnitTestClassRole ..> java.lang.Override
+bluej.pkgmgr.target.role.UnitTestClassRole ..> java.awt.Color
+bluej.pkgmgr.target.role.UnitTestClassRole ..> java.awt.GradientPaint
+bluej.pkgmgr.target.role.UnitTestClassRole ..> java.awt.Paint
+classDiagram.DiagramGUI ..> bluej.pkgmgr.BlueJPackageFile
+classDiagram.DiagramGUI ..> bluej.pkgmgr.Package
+classDiagram.DiagramGUI ..> bluej.pkgmgr.PackageFileFactory
+classDiagram.DiagramGUI ..> bluej.pkgmgr.PkgMgrFrame
+classDiagram.DiagramGUI ..> java.io.File
+classDiagram.DiagramGUI ..> java.io.IOException
+classDiagram.DiagramGUI ..> javax.tools.JavaCompiler
+classDiagram.DiagramGUI ..> bluej.pkgmgr.PackageFile
+classDiagram.ParserAdapter ..> bluej.graph.Edge
+classDiagram.ParserAdapter ..> bluej.graph.Vertex
+classDiagram.ParserAdapter ..> bluej.pkgmgr.dependency.Dependency
+classDiagram.ParserAdapter ..> bluej.pkgmgr.target.DependentTarget
+classDiagram.ParserAdapter ..> bluej.pkgmgr.target.Target
+classDiagram.ParserAdapter ..> java.lang.Override
+classDiagram.ParserAdapter ..> bluej.SortedProperties
+classDiagram.ParserAdapter ..> bluej.pkgmgr.Package
+classDiagram.ParserAdapter ..> bluej.pkgmgr.dependency.AssociationDependency
+classDiagram.ParserAdapter ..> bluej.pkgmgr.dependency.ContainmentDependency
+classDiagram.ParserAdapter ..> bluej.pkgmgr.dependency.ExtendsDependency
+classDiagram.ParserAdapter ..> bluej.pkgmgr.dependency.ImplementsDependency
+classDiagram.ParserAdapter ..> bluej.pkgmgr.dependency.UsesDependency
+classDiagram.ParserAdapter ..> bluej.pkgmgr.target.ClassTarget
+classDiagram.ParserAdapter ..> bluej.pkgmgr.target.role.AbstractClassRole
+classDiagram.ParserAdapter ..> diagramParser.PackageParser
+classDiagram.ParserAdapter ..> diagramParser.PackageRelations
+classDiagram.ParserAdapter ..> elements.ClassElement
+classDiagram.ParserAdapter ..> elements.ClassLikeElement
+classDiagram.ParserAdapter ..> elements.FieldElement
+classDiagram.ParserAdapter ..> elements.IDiagramElement
+classDiagram.ParserAdapter ..> elements.MethodElement
+classDiagram.ParserAdapter ..> java.io.IOException
+classDiagram.ParserAdapter ..> java.util.HashSet
+classDiagram.ParserAdapter ..> java.util.LinkedHashMap
+classDiagram.ParserAdapter ..> java.util.LinkedHashSet
+classDiagram.ParserAdapter ..> java.util.Objects
+classDiagram.ParserAdapter ..> javax.lang.model.element.Modifier
+classDiagram.ParserAdapter ..> javax.tools.JavaCompiler
+classDiagram.ParserAdapter ..> bluej.pkgmgr.PackageFile
+classDiagram.ParserAdapter ..> java.util.Iterator
+bluej.graph.GraphElement ..> java.awt.event.MouseEvent
+bluej.graph.GraphPainter ..> java.awt.Graphics2D
+bluej.graph.IExpandable ..> bluej.pkgmgr.target.DependentTarget
+bluej.graph.IExpandable ..> java.awt.event.MouseEvent
+bluej.graph.Moveable ..> javax.swing.JComponent
+bluej.graph.SelectableGraphElement --|> bluej.graph.GraphElement
+bluej.graph.SelectableGraphElement --|> bluej.graph.Selectable
+bluej.pkgmgr.PackageEditorListener --|> java.util.EventListener
+bluej.pkgmgr.PackageFile ..> java.io.IOException
+bluej.pkgmgr.PackageFile ..> java.util.Properties
+bluej.pkgmgr.graphPainter.DependencyPainter ..> bluej.pkgmgr.dependency.Dependency
+bluej.pkgmgr.graphPainter.DependencyPainter ..> java.awt.Graphics2D
+@enduml

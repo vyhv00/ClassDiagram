@@ -10,5 +10,5 @@ module GUI {
     requires java.logging;
     requires Parser;
 
-    exports classDiagram;
+    exports graphProvider;
 }
