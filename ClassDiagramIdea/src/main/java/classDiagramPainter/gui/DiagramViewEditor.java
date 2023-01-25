@@ -11,7 +11,6 @@ import com.intellij.openapi.util.Key;
 import com.intellij.openapi.util.UserDataHolderBase;
 import com.intellij.openapi.vfs.LocalFileSystem;
 import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.ui.docking.DockContainerFactory;
 import graphProvider.DiagramGUI;
 import graphProvider.fileCreatedListener.FileListener;
 import org.jetbrains.annotations.Nls;
@@ -43,8 +42,9 @@ public class DiagramViewEditor extends UserDataHolderBase implements FileEditor,
 
     public DiagramViewEditor (VirtualFile file, Project project) throws IOException {
         this.file = (DiagramLightFile) file;
-        diagramsService = DiagramsService.getInstance(project);
-        diagramsService.addDiagram(((DiagramLightFile) file).getOriginalFile().getPath());
+        //diagram tabs doesn't recover at this moment
+//        diagramsService = DiagramsService.getInstance(project);
+//        diagramsService.addDiagram(((DiagramLightFile) file).getOriginalFile().getPath());
         prepareGraph();
     }
 
