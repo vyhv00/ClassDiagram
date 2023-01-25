@@ -18,6 +18,7 @@ import com.sun.source.tree.BlockTree;
 import com.sun.source.tree.ClassTree;
 import com.sun.source.tree.ExpressionTree;
 import com.sun.source.tree.IdentifierTree;
+import com.sun.source.tree.LambdaExpressionTree;
 import com.sun.source.tree.MethodTree;
 import com.sun.source.tree.ParameterizedTypeTree;
 import com.sun.source.tree.Tree;
@@ -108,9 +109,21 @@ class Scanner extends TreePathScanner<TreePath, IDiagramElement> {
     }
 
     @Override
+    public TreePath visitLambdaExpression(LambdaExpressionTree lambda, IDiagramElement parent) {
+        if (parent instanceof IOwnedElement owned) {
+            parent = getTopOwner(owned);
+        }
+        if (parent instanceof ClassLikeElement clazz){
+            MethodElement emptyMethod = new MethodElement(null, null, null, clazz, false);
+            return super.visitLambdaExpression(lambda, emptyMethod); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
+        }
+        return null;
+    }
+
+    @Override
     public TreePath visitVariable(VariableTree variable, IDiagramElement parent) {
         if (parent instanceof ClassLikeElement) {
-            if (parent instanceof EnumElement parentClass && variable.getInitializer().getKind() == Tree.Kind.NEW_CLASS && variable.getType().toString().equals(parentClass.getElement().toString())) {
+            if (parent instanceof EnumElement parentClass && variable.getInitializer() != null && variable.getInitializer().getKind() == Tree.Kind.NEW_CLASS && variable.getType().toString().equals(parentClass.getElement().toString())) {
                 FieldElement field = new FieldElement(variable.getName(), null, variable.getModifiers().getFlags(), parent);
                 parentClass.addField(field);
                 return null;
