@@ -1,12 +1,12 @@
 package classDiagramPainter.gui;
 
+import classDiagramPainter.gui.utils.DiagramLightFile;
 import com.intellij.openapi.fileEditor.FileEditor;
 import com.intellij.openapi.fileEditor.FileEditorManager;
 import com.intellij.openapi.fileEditor.FileEditorPolicy;
 import com.intellij.openapi.fileEditor.FileEditorProvider;
 import com.intellij.openapi.project.DumbAware;
 import com.intellij.openapi.project.Project;
-import com.intellij.openapi.vfs.VfsUtil;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.JavaDirectoryService;
 import com.intellij.psi.PsiDirectory;
@@ -16,9 +16,8 @@ import com.intellij.testFramework.LightVirtualFile;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.File;
 import java.io.IOException;
-import java.nio.file.Path;
+import java.util.Objects;
 
 public class DiagramViewProvider implements FileEditorProvider, DumbAware {
 
@@ -44,7 +43,7 @@ public class DiagramViewProvider implements FileEditorProvider, DumbAware {
     @Override
     public @NotNull
     FileEditor createEditor(@NotNull Project project, @NotNull VirtualFile lightFile) {
-        VirtualFile virtualFile = ((LightVirtualFile) lightFile).getOriginalFile();
+        VirtualFile virtualFile = ((DiagramLightFile) lightFile).getOriginalFile();
         FileEditor[] openedEditors = FileEditorManager.getInstance(project).getEditors(lightFile);
         DiagramViewEditor editor = null;
         for (FileEditor fileEditor : openedEditors) {
@@ -56,13 +55,13 @@ public class DiagramViewProvider implements FileEditorProvider, DumbAware {
         try {
             if (DiagramViewEditor.getInitActionCreate().equals(virtualFile.getUserData(DiagramViewEditor.getInitAction()))) {
                 if (editor == null) {
-                    editor = new DiagramViewEditor(lightFile);
+                    editor = new DiagramViewEditor(lightFile, project);
                 }
                 lightFile.refresh(false, true);
                 editor.createGraph();
             } else {
                 if (editor == null && DiagramViewEditor.openable(virtualFile.getPath())) {
-                    editor = new DiagramViewEditor(lightFile);
+                    editor = new DiagramViewEditor(lightFile, project);
                     editor.openGraph();
                 }
             }
@@ -83,5 +82,9 @@ public class DiagramViewProvider implements FileEditorProvider, DumbAware {
     public @NotNull
     FileEditorPolicy getPolicy() {
         return FileEditorPolicy.HIDE_DEFAULT_EDITOR;
+    }
+
+    public static DiagramViewProvider getInstance() {
+        return Objects.requireNonNull(FileEditorProvider.EP_FILE_EDITOR_PROVIDER.findFirstAssignableExtension(DiagramViewProvider.class));
     }
 }
