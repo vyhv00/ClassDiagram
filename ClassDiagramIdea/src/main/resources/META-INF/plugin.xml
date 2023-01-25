@@ -22,6 +22,8 @@
 
     <extensions defaultExtensionNs="com.intellij">
         <!-- Add your extensions here -->
+        <postStartupActivity implementation="classDiagramPainter.gui.utils.DiagramStartup"/>
+        <projectService serviceInterface="classDiagramPainter.gui.utils.DiagramsService" serviceImplementation="classDiagramPainter.gui.utils.DiagramsService"/>
         <fileEditorProvider implementation="classDiagramPainter.gui.DiagramViewProvider"/>
         <editorTabTitleProvider implementation="classDiagramPainter.gui.DiagramViewTitleProvider"/>
     </extensions>

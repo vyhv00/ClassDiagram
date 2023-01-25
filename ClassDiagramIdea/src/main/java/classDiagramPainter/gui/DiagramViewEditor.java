@@ -1,17 +1,16 @@
 package classDiagramPainter.gui;
 
+import classDiagramPainter.gui.utils.DiagramLightFile;
+import classDiagramPainter.gui.utils.DiagramsService;
 import com.intellij.openapi.fileEditor.FileEditor;
 import com.intellij.openapi.fileEditor.FileEditorLocation;
 import com.intellij.openapi.fileEditor.FileEditorState;
+import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.Disposer;
 import com.intellij.openapi.util.Key;
 import com.intellij.openapi.util.UserDataHolderBase;
 import com.intellij.openapi.vfs.LocalFileSystem;
-import com.intellij.openapi.vfs.VfsUtil;
 import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.testFramework.LightVirtualFile;
-import com.intellij.workspaceModel.storage.impl.url.VirtualFileUrlManagerImpl;
-import com.sun.jna.platform.FileMonitor;
 import graphProvider.DiagramGUI;
 import graphProvider.fileCreatedListener.FileListener;
 import org.jetbrains.annotations.Nls;
@@ -36,12 +35,16 @@ public class DiagramViewEditor extends UserDataHolderBase implements FileEditor,
     private static final String INIT_ACTION_CREATE = "DiagramViewEditor.InitAction.Create";
     private static final String INIT_ACTION_OPEN = "DiagramViewEditor.InitAction.Open";
 
-    private final LightVirtualFile file;
+    private final DiagramLightFile file;
     private DiagramGUI diagram;
     private String name;
+    private DiagramsService diagramsService;
 
-    public DiagramViewEditor (VirtualFile file) throws IOException {
-        this.file = (LightVirtualFile) file;
+    public DiagramViewEditor (VirtualFile file, Project project) throws IOException {
+        this.file = (DiagramLightFile) file;
+        //diagram tabs doesn't recover at this moment
+//        diagramsService = DiagramsService.getInstance(project);
+//        diagramsService.addDiagram(((DiagramLightFile) file).getOriginalFile().getPath());
         prepareGraph();
     }
 
@@ -97,6 +100,8 @@ public class DiagramViewEditor extends UserDataHolderBase implements FileEditor,
             diagram.getFrame().doSave();
             diagram.getFrame().removeListener(this);
         }
+        //diagram tabs doesn't recover at this moment
+//        diagramsService.removeDiagram(file.getOriginalFile().getPath());
         Disposer.dispose(this);
     }
 
@@ -126,7 +131,7 @@ public class DiagramViewEditor extends UserDataHolderBase implements FileEditor,
     }
 
     private void prepareGraph() throws IOException {
-        diagram = new DiagramGUI(((LightVirtualFile) file).getOriginalFile().getPath());
+        diagram = new DiagramGUI(file.getOriginalFile().getPath());
     }
 
     public void openGraph() {
@@ -138,7 +143,6 @@ public class DiagramViewEditor extends UserDataHolderBase implements FileEditor,
 
     public void createGraph() throws IOException {
         try {
-            diagram.getFrame().doSave();
             JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
             if(compiler == null) {
                 compiler = (JavaCompiler) Class.forName("com.sun.tools.javac.api.JavacTool", true, JavacMain.class.getClassLoader()).newInstance();
