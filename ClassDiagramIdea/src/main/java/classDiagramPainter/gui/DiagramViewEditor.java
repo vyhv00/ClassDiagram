@@ -100,7 +100,8 @@ public class DiagramViewEditor extends UserDataHolderBase implements FileEditor,
             diagram.getFrame().doSave();
             diagram.getFrame().removeListener(this);
         }
-        diagramsService.removeDiagram(file.getOriginalFile().getPath());
+        //diagram tabs doesn't recover at this moment
+//        diagramsService.removeDiagram(file.getOriginalFile().getPath());
         Disposer.dispose(this);
     }
 
