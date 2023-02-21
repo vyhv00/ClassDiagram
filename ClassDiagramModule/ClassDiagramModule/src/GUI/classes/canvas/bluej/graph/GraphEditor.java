@@ -21,27 +21,23 @@
  */
 package canvas.bluej.graph;
 
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Cursor;
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
+import java.awt.*;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map.Entry;
-import javax.swing.JLayeredPane;
+import javax.swing.*;
 
 import canvas.bluej.pkgmgr.graphPainter.GraphPainterStdImpl;
 import canvas.bluej.pkgmgr.target.ClassTarget;
 import canvas.bluej.pkgmgr.Package;
 import graphProvider.fileCreatedListener.FileListener;
 import graphProvider.fileCreatedListener.FileSubject;
-import java.awt.Font;
+
 import java.awt.event.MouseAdapter;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -50,10 +46,6 @@ import java.util.HashSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
-import javax.swing.JFileChooser;
-import javax.swing.JMenuItem;
-import javax.swing.JPopupMenu;
-import javax.swing.SwingUtilities;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
@@ -124,7 +116,7 @@ public class GraphEditor extends JLayeredPane
         setLayout(null);
         setBackground(new Color(0, 0, 0, 0));
         graphChanged();
-        
+
         listeners = new HashSet<>();
     }
 
@@ -170,6 +162,7 @@ public class GraphEditor extends JLayeredPane
     }
 
     // ---- MouseMotionListener interface: ----
+
     /**
      * The mouse was dragged.
      */
@@ -198,13 +191,14 @@ public class GraphEditor extends JLayeredPane
     }
 
     // ---- end of MouseMotionListener interface ----
+
     /**
      * Process mouse events. This is a bug work-around: we prefer to handle the
      * mouse events in the mouse listener methods in the selection controller,
      * but on Windows the isPopupTrigger flag is not correctly set in the
      * mousePressed event. This method seems to be the only place to reliably
      * get it. So unfortunately, we need to process the popup trigger here.
-     *
+     * <p>
      * This method is called after the corresponding mousePressed method.
      */
     @Override
@@ -330,6 +324,7 @@ public class GraphEditor extends JLayeredPane
     private boolean hasPermFocus;
 
     /* whether we are focussed within window */
+
     /**
      * Set whether the editor has focus within its parent.
      *
@@ -347,6 +342,7 @@ public class GraphEditor extends JLayeredPane
     }
 
     private class PopClickListener extends MouseAdapter {
+        private static final Font FONT = new Font("Arial", Font.PLAIN, 12);
 
         @Override
         public void mouseClicked(MouseEvent e) {
@@ -376,12 +372,12 @@ public class GraphEditor extends JLayeredPane
             JPopupMenu menu = new JPopupMenu();
             JMenuItem menuImageItem = saveImageItem(component);
             JMenuItem menuExpandItem = new JMenuItem("Expand selected classes");
-            menuExpandItem.setFont(new Font("Arial", Font.PLAIN, 12));
+            menuExpandItem.setFont(FONT);
             menuExpandItem.addActionListener((e) -> {
                 selectionController.expand(e);
             });
             JMenuItem menuColapseItem = new JMenuItem("Collapse selected classes");
-            menuColapseItem.setFont(new Font("Arial", Font.PLAIN, 12));
+            menuColapseItem.setFont(FONT);
             menuColapseItem.addActionListener((e) -> {
                 selectionController.colapse(e);
             });
@@ -394,7 +390,7 @@ public class GraphEditor extends JLayeredPane
 
         private JMenuItem saveImageItem(Component component) {
             JMenuItem menuItem = new JMenuItem("Save as image");
-            menuItem.setFont(new Font("Arial", Font.PLAIN, 12));
+            menuItem.setFont(FONT);
             menuItem.addActionListener((e) -> {
                 JFileChooser fileChooser = new JFileChooser();
                 fileChooser.setDialogTitle("Save class diagram");
@@ -422,8 +418,43 @@ public class GraphEditor extends JLayeredPane
             });
             return menuItem;
         }
+
+        private JMenuItem visibleClassesItem(Component component) {
+            JMenuItem menuItem = new JMenuItem("Visible classes");
+            menuItem.setFont(FONT);
+
+            menuItem.addActionListener((e) -> {
+                try {
+                    JPanel content = new JPanel();
+                    HashMap<JCheckBoxMenuItem, ClassTarget> targets = new HashMap<>();
+                    int size = 200;
+
+                    for (ClassTarget target : ((Package) graph).getClassTargets()) {
+                        JCheckBoxMenuItem item = new JCheckBoxMenuItem(target.getBaseName(), target.isVisible());
+
+                        if(item.getWidth() > size) {
+                            size = item.getWidth();
+                        }
+
+                        targets.put(item, target);
+                        content.add(item);
+                    }
+
+                    if(size > 400) {
+                        size = 400;
+                    }
+
+                    Popup a = PopupFactory.getSharedInstance().getPopup(component, content, size, 600);
+
+                    a.show();
+                } catch (Exception ex) {
+
+                }
+            });
+            return menuItem;
+        }
     }
-    
+
     //----------------FileSubject-------------------------
     private final HashSet<FileListener> listeners;
 
