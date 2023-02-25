@@ -389,6 +389,11 @@ public class ClassTarget extends DependentTarget
         if (sMethods != null) {
             methods.addAll(Arrays.asList(Utility.split(sMethods, "/,/")));
         }
+
+        String sVisible = props.getProperty(prefix + ".visible");
+        if (sVisible != null) {
+            setVisible(Boolean.valueOf(sVisible));
+        }
     }
 
     /**
@@ -411,6 +416,7 @@ public class ClassTarget extends DependentTarget
 
         props.put(prefix + ".fields", arrayfy(fields));
         props.put(prefix + ".methods", arrayfy(methods));
+        props.put(prefix + ".visible", Boolean.toString(isVisible()));
     }
 
     //-vyhv

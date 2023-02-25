@@ -37,6 +37,8 @@ import canvas.bluej.pkgmgr.target.ClassTarget;
 import canvas.bluej.pkgmgr.Package;
 import graphProvider.fileCreatedListener.FileListener;
 import graphProvider.fileCreatedListener.FileSubject;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import java.awt.event.MouseAdapter;
 import java.awt.image.BufferedImage;
@@ -47,6 +49,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.plaf.basic.BasicSplitPaneUI;
+import javax.swing.plaf.basic.BasicSplitPaneUI.BasicVerticalLayoutManager;
 
 /**
  * Component to allow editing of general graphs.
@@ -162,7 +166,6 @@ public class GraphEditor extends JLayeredPane
     }
 
     // ---- MouseMotionListener interface: ----
-
     /**
      * The mouse was dragged.
      */
@@ -191,7 +194,6 @@ public class GraphEditor extends JLayeredPane
     }
 
     // ---- end of MouseMotionListener interface ----
-
     /**
      * Process mouse events. This is a bug work-around: we prefer to handle the
      * mouse events in the mouse listener methods in the selection controller,
@@ -324,7 +326,6 @@ public class GraphEditor extends JLayeredPane
     private boolean hasPermFocus;
 
     /* whether we are focussed within window */
-
     /**
      * Set whether the editor has focus within its parent.
      *
@@ -342,6 +343,7 @@ public class GraphEditor extends JLayeredPane
     }
 
     private class PopClickListener extends MouseAdapter {
+
         private static final Font FONT = new Font("Arial", Font.PLAIN, 12);
 
         @Override
@@ -371,6 +373,7 @@ public class GraphEditor extends JLayeredPane
         private JPopupMenu createPopupMenu(Component component) {
             JPopupMenu menu = new JPopupMenu();
             JMenuItem menuImageItem = saveImageItem(component);
+            JMenuItem menuClassesItem = visibleClassesItem(component);
             JMenuItem menuExpandItem = new JMenuItem("Expand selected classes");
             menuExpandItem.setFont(FONT);
             menuExpandItem.addActionListener((e) -> {
@@ -385,6 +388,7 @@ public class GraphEditor extends JLayeredPane
             menu.add(menuColapseItem);
             menu.addSeparator();
             menu.add(menuImageItem);
+            menu.add(menuClassesItem);
             return menu;
         }
 
@@ -426,29 +430,63 @@ public class GraphEditor extends JLayeredPane
             menuItem.addActionListener((e) -> {
                 try {
                     JPanel content = new JPanel();
+                    content.setLayout(new BoxLayout(content, BoxLayout.PAGE_AXIS));
+
+                    JPanel listPane = new JPanel();
+                    listPane.setLayout(new BoxLayout(listPane, BoxLayout.PAGE_AXIS));
+
+                    JScrollPane scrollPane = new JScrollPane(listPane);
+                    scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+                    content.add(scrollPane);
                     HashMap<JCheckBoxMenuItem, ClassTarget> targets = new HashMap<>();
-                    int size = 200;
+                    int size = 400;
 
                     for (ClassTarget target : ((Package) graph).getClassTargets()) {
                         JCheckBoxMenuItem item = new JCheckBoxMenuItem(target.getBaseName(), target.isVisible());
 
-                        if(item.getWidth() > size) {
+                        if (item.getWidth() > size) {
                             size = item.getWidth();
                         }
 
                         targets.put(item, target);
-                        content.add(item);
+                        listPane.add(item);
                     }
 
-                    if(size > 400) {
-                        size = 400;
+                    if (size > 600) {
+                        size = 600;
                     }
+                    scrollPane.setMinimumSize(new Dimension(size, 600));
+                    JPanel buttonPane = new JPanel(new FlowLayout());
+                    content.add(buttonPane);
 
-                    Popup a = PopupFactory.getSharedInstance().getPopup(component, content, size, 600);
+                    JButton okButton = new JButton("OK");
+                    JButton cancelButton = new JButton("Cancel");
+                    buttonPane.add(cancelButton);
+                    buttonPane.add(okButton);
 
-                    a.show();
+                    JDialog dialog = new JDialog(SwingUtilities.getWindowAncestor(component), "Select visible classes");
+                    dialog.setContentPane(content);
+                    dialog.setSize(size, 620);
+
+                    okButton.addActionListener(new ActionListener() {
+                        public void actionPerformed(ActionEvent e) {
+                            targets.forEach((JCheckBoxMenuItem item, ClassTarget target) -> {
+                                target.setVisible(item.getState());
+                            });
+                            ((Package) graph).repaint();
+                            dialog.setVisible(false);
+                        }
+                    });
+
+                    cancelButton.addActionListener(new ActionListener() {
+                        public void actionPerformed(ActionEvent e) {
+                            dialog.setVisible(false);
+                        }
+                    });
+
+                    dialog.setVisible(true);
                 } catch (Exception ex) {
-
+                    System.err.println(ex);
                 }
             });
             return menuItem;
