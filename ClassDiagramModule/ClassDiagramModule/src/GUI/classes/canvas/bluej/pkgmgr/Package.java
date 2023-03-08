@@ -86,6 +86,12 @@ public final class Package extends Graph {
      */
     private List<Dependency> usesArrows;
 
+    private List<Dependency> associtaionArrows;
+
+    private List<Dependency> containmentArrows;
+
+    private List<Dependency> implementsArrows;
+
     /**
      * all the extends-arrows in a package
      */
@@ -99,10 +105,13 @@ public final class Package extends Graph {
      * whether extends-arrows should be shown
      */
     private boolean showExtends = true;
+    private boolean showImplements = true;
     /**
      * whether uses-arrows should be shown
      */
     private boolean showUses = true;
+    private boolean showAssociations = true;
+    private boolean showContainments = true;
 
     private PackageEditor editor;
     private File dir;
@@ -128,6 +137,9 @@ public final class Package extends Graph {
             throws IOException {
         targets = new TargetCollection();
         usesArrows = new ArrayList<Dependency>();
+        associtaionArrows = new ArrayList<Dependency>();
+        containmentArrows = new ArrayList<Dependency>();
+        implementsArrows = new ArrayList<Dependency>();
         extendsArrows = new ArrayList<Dependency>();
         load();
     }
@@ -347,7 +359,12 @@ public final class Package extends Graph {
 
         // save targets and dependencies in package
         props.put("package.baseName", String.valueOf(this.baseName));
-        props.put("package.numDependencies", String.valueOf(usesArrows.size() + extendsArrows.size()));
+        props.put("package.numDependencies", String.valueOf(
+                usesArrows.size()
+                + associtaionArrows.size()
+                + containmentArrows.size()
+                + implementsArrows.size()
+                + extendsArrows.size()));
 
         int t_count = 0;
 
@@ -362,13 +379,21 @@ public final class Package extends Graph {
         }
         props.put("package.numTargets", String.valueOf(t_count));
 
-        for (int i = 0; i < usesArrows.size(); i++) { // uses arrows
-            Dependency d = usesArrows.get(i);
+        List<Dependency> allUsesArrows = new ArrayList<Dependency>();
+        allUsesArrows.addAll(usesArrows);
+        allUsesArrows.addAll(associtaionArrows);
+        allUsesArrows.addAll(containmentArrows);
+        for (int i = 0; i < allUsesArrows.size(); i++) { // uses arrows
+            Dependency d = allUsesArrows.get(i);
             d.save(props, "dependency" + (i + 1));
         }
-        for (int i = 0; i < extendsArrows.size(); i++) { // uses arrows
-            Dependency d = extendsArrows.get(i);
-            d.save(props, "dependency" + (i + 1 + usesArrows.size()));
+
+        List<Dependency> allExtendsArrows = new ArrayList<Dependency>();
+        allExtendsArrows.addAll(extendsArrows);
+        allExtendsArrows.addAll(implementsArrows);
+        for (int i = 0; i < allExtendsArrows.size(); i++) { // uses arrows
+            Dependency d = allExtendsArrows.get(i);
+            d.save(props, "dependency" + (i + 1 + allUsesArrows.size()));
         }
 
         try {
@@ -393,6 +418,15 @@ public final class Package extends Graph {
 
         if (showUses) {
             iterations.add(usesArrows.iterator());
+        }
+        if (showAssociations) {
+            iterations.add(associtaionArrows.iterator());
+        }
+        if (showContainments) {
+            iterations.add(containmentArrows.iterator());
+        }
+        if (showImplements) {
+            iterations.add(implementsArrows.iterator());
         }
         if (showExtends) {
             iterations.add(extendsArrows.iterator());
@@ -439,14 +473,39 @@ public final class Package extends Graph {
         }
 
         if (d instanceof UsesDependency) {
-            int index = usesArrows.indexOf(d);
-            if (index != -1) {
-                if (d instanceof UsesDependency) {
-                    ((UsesDependency) usesArrows.get(index)).setFlag(true);
+            if (d instanceof AssociationDependency) {
+                int index = associtaionArrows.indexOf(d);
+
+                if (index != -1) {
+                    ((AssociationDependency) associtaionArrows.get(index)).setFlag(true);
+                    return;
+                } else {
+                    associtaionArrows.add(d);
                 }
+            } else if (d instanceof ContainmentDependency) {
+                int index = containmentArrows.indexOf(d);
+
+                if (index != -1) {
+                    ((ContainmentDependency) containmentArrows.get(index)).setFlag(true);
+                    return;
+                } else {
+                    containmentArrows.add(d);
+                }
+            } else {
+                int index = usesArrows.indexOf(d);
+
+                if (index != -1) {
+                    ((UsesDependency) usesArrows.get(index)).setFlag(true);
+                    return;
+                } else {
+                    usesArrows.add(d);
+                }
+            }
+        } else if (d instanceof ImplementsDependency) {
+            if (implementsArrows.contains(d)) {
                 return;
             } else {
-                usesArrows.add(d);
+                implementsArrows.add(d);
             }
         } else {
             if (extendsArrows.contains(d)) {
@@ -551,6 +610,18 @@ public final class Package extends Graph {
         showUses = state;
     }
 
+    public void setShowAssociations(boolean state) {
+        showAssociations = state;
+    }
+
+    public void setShowContainments(boolean state) {
+        showContainments = state;
+    }
+
+    public void setShowImplemnets(boolean state) {
+        showImplements = state;
+    }
+
     public void setShowExtends(boolean state) {
         showExtends = state;
     }
@@ -586,10 +657,13 @@ public final class Package extends Graph {
     public void setBaseName(String baseName) {
         this.baseName = baseName;
     }
-    
+
     public void clean() {
         usesArrows = new ArrayList<Dependency>();
-        extendsArrows = new ArrayList<Dependency>(); 
+        extendsArrows = new ArrayList<Dependency>();
+        implementsArrows = new ArrayList<Dependency>();
+        associtaionArrows = new ArrayList<Dependency>();
+        containmentArrows = new ArrayList<Dependency>();
         targets = new TargetCollection();
     }
 }

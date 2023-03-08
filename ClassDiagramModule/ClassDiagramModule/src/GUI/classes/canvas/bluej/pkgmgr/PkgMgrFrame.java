@@ -58,8 +58,17 @@ public class PkgMgrFrame extends JPanel
     public static final String OBJECTBENCH_WIDTH = "objectbench.width";
     public static final String OBJECTBENCH_HEIGHT = "objectbench.height";
     public static final String SHOW_USES = "package.showUses";
+    public static final String SHOW_ASSOCIATIONS = "package.showAssociations";
+    public static final String SHOW_CONTAINMENTS = "package.showContainments";
+    public static final String SHOW_IMPLEMENTS = "package.showImplements";
     public static final String SHOW_EXTENDS = "package.showExtends";
     public static final String PROJECT_CHARSET = "project.charset";
+
+    private boolean isShowUses = true;
+    private boolean isShowAssociations = true;
+    private boolean isShowContainments = true;
+    private boolean isShowImplements = true;
+    private boolean isShowExtends = true;
 
     public static String NULL_OBJECT_INFO;
 
@@ -143,8 +152,11 @@ public class PkgMgrFrame extends JPanel
 
         setLocation(x, y);
 
-        String uses_str = p.getProperty(SHOW_USES, "true");
-        String extends_str = p.getProperty(SHOW_EXTENDS, "true");
+        isShowUses = Boolean.valueOf(p.getProperty(SHOW_USES, "true"));
+        isShowAssociations = Boolean.valueOf(p.getProperty(SHOW_ASSOCIATIONS, "true"));
+        isShowContainments = Boolean.valueOf(p.getProperty(SHOW_CONTAINMENTS, "true"));
+        isShowImplements = Boolean.valueOf(p.getProperty(SHOW_IMPLEMENTS, "true"));
+        isShowExtends = Boolean.valueOf(p.getProperty(SHOW_EXTENDS, "true"));
         updateShowUsesInPackage();
         updateShowExtendsInPackage();
         editor.revalidate();
@@ -159,32 +171,91 @@ public class PkgMgrFrame extends JPanel
      */
     private void updateWindowTitle() {
         String title = "Class diagram";
-        
+
         title = title + "  [" + getPackage().getBaseName() + "]";
 //        setTitle(title);
     }
-    
-     /**
+
+    /**
      * Return the package shown by this frame.
-     * 
+     *
      * This call should be bracketed by a call to isEmptyFrame() before use.
      */
-    public Package getPackage()
-    {
+    public Package getPackage() {
         return pkg;
+    }
+    
+        public void updateShowUsesInPackage(boolean state) {
+        isShowUses = state;
+        updateShowUsesInPackage();
+    }
+    
+    public void updateShowExtendsInPackage(boolean state) {
+        isShowExtends = state;
+        updateShowExtendsInPackage();
+    }
+
+    public void updateShowAssociationsInPackage(boolean state) {
+        isShowAssociations = state;
+        updateShowAssociationsInPackage();
+    }
+
+    public void updateShowContainmenstsInPackage(boolean state) {
+        isShowContainments = state;
+        updateShowContainmenstsInPackage();
+    }
+
+    public void updateShowImplementsInPackage(boolean state) {
+        isShowImplements = state;
+        updateShowImplementsInPackage();
     }
 
     /**
      * Toggle the state of the "show uses arrows" switch.
      */
     public void updateShowUsesInPackage() {
-        pkg.setShowUses(true);
+        pkg.setShowUses(isShowUses);
+        editor.repaint();
+    }
+    
+    public void updateShowExtendsInPackage() {
+        pkg.setShowExtends(isShowExtends);
         editor.repaint();
     }
 
-    public void updateShowExtendsInPackage() {
-        pkg.setShowExtends(true);
+    public void updateShowAssociationsInPackage() {
+        pkg.setShowAssociations(isShowAssociations);
         editor.repaint();
+    }
+
+    public void updateShowContainmenstsInPackage() {
+        pkg.setShowContainments(isShowContainments);
+        editor.repaint();
+    }
+
+    public void updateShowImplementsInPackage() {
+        pkg.setShowImplemnets(isShowImplements);
+        editor.repaint();
+    }
+
+    public boolean isIsShowUses() {
+        return isShowUses;
+    }
+
+    public boolean isIsShowAssociations() {
+        return isShowAssociations;
+    }
+
+    public boolean isIsShowContainments() {
+        return isShowContainments;
+    }
+
+    public boolean isIsShowImplements() {
+        return isShowImplements;
+    }
+
+    public boolean isIsShowExtends() {
+        return isShowExtends;
     }
 
     @Override
@@ -258,14 +329,17 @@ public class PkgMgrFrame extends JPanel
         p.put(OBJECTBENCH_WIDTH, Integer.toString(d.width));
         p.put(OBJECTBENCH_HEIGHT, Integer.toString(d.height));
 
-        p.put(SHOW_USES, Boolean.toString(true));
-        p.put(SHOW_EXTENDS, Boolean.toString(true));
+        p.put(SHOW_USES, Boolean.toString(isShowUses));
+        p.put(SHOW_EXTENDS, Boolean.toString(isShowExtends));
+        p.put(SHOW_ASSOCIATIONS, Boolean.toString(isShowAssociations));
+        p.put(SHOW_IMPLEMENTS, Boolean.toString(isShowImplements));
+        p.put(SHOW_CONTAINMENTS, Boolean.toString(isShowContainments));
 
         p.put(PROJECT_CHARSET, "UTF-8");
         pkg.save(p);
         notifyListeners(pkg.getPath().getAbsolutePath());
     }
-    
+
     //----------------FileSubject-------------------------
     private final HashSet<FileListener> listeners;
 

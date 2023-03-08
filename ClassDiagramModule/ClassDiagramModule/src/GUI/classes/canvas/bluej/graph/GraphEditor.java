@@ -26,7 +26,6 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map.Entry;
@@ -35,6 +34,7 @@ import javax.swing.*;
 import canvas.bluej.pkgmgr.graphPainter.GraphPainterStdImpl;
 import canvas.bluej.pkgmgr.target.ClassTarget;
 import canvas.bluej.pkgmgr.Package;
+import canvas.bluej.pkgmgr.PkgMgrFrame;
 import graphProvider.fileCreatedListener.FileListener;
 import graphProvider.fileCreatedListener.FileSubject;
 import java.awt.event.ActionEvent;
@@ -49,8 +49,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import javax.swing.plaf.basic.BasicSplitPaneUI;
-import javax.swing.plaf.basic.BasicSplitPaneUI.BasicVerticalLayoutManager;
 
 /**
  * Component to allow editing of general graphs.
@@ -132,7 +130,8 @@ public class GraphEditor extends JLayeredPane
         addMouseMotionListener(this);
         addMouseMotionListener(selectionController);
         addMouseListener(selectionController);
-        addMouseListener(new PopClickListener());
+        final PopClickListener popClickListener = new PopClickListener();
+        addMouseListener(popClickListener);
     }
 
     /**
@@ -374,6 +373,7 @@ public class GraphEditor extends JLayeredPane
             JPopupMenu menu = new JPopupMenu();
             JMenuItem menuImageItem = saveImageItem(component);
             JMenuItem menuClassesItem = visibleClassesItem(component);
+            JMenu visibleDep = visibleDependencies(component);
             JMenuItem menuExpandItem = new JMenuItem("Expand selected classes");
             menuExpandItem.setFont(FONT);
             menuExpandItem.addActionListener((e) -> {
@@ -387,8 +387,10 @@ public class GraphEditor extends JLayeredPane
             menu.add(menuExpandItem);
             menu.add(menuColapseItem);
             menu.addSeparator();
-            menu.add(menuImageItem);
             menu.add(menuClassesItem);
+            menu.add(visibleDep);
+            menu.addSeparator();
+            menu.add(menuImageItem);
             return menu;
         }
 
@@ -491,9 +493,96 @@ public class GraphEditor extends JLayeredPane
             });
             return menuItem;
         }
+
+        private JMenu visibleDependencies(Component component) {
+            JMenu visibleDependeciesMenu = new JMenu("Select visible dependencies");
+            visibleDependeciesMenu.setFont(FONT);
+
+            PkgMgrFrame frame = frameFromComponent(component);
+
+            JCheckBoxMenuItem extendsDepItem = new JCheckBoxMenuItem("Extends dependency");
+            JCheckBoxMenuItem implementsDepItem = new JCheckBoxMenuItem("Implements dependency");
+            JCheckBoxMenuItem associationDepItem = new JCheckBoxMenuItem("Association dependency");
+            JCheckBoxMenuItem usesDepItem = new JCheckBoxMenuItem("Uses dependency");
+            JCheckBoxMenuItem containmentDepItem = new JCheckBoxMenuItem("Continment dependency");
+            
+            extendsDepItem.setFont(FONT);
+            implementsDepItem.setFont(FONT);
+            associationDepItem.setFont(FONT);
+            usesDepItem.setFont(FONT);
+            containmentDepItem.setFont(FONT);
+
+            extendsDepItem.setState(frame.isIsShowExtends());
+            implementsDepItem.setState(frame.isIsShowImplements());
+            associationDepItem.setState(frame.isIsShowAssociations());
+            usesDepItem.setState(frame.isIsShowUses());
+            containmentDepItem.setState(frame.isIsShowContainments());
+
+            extendsDepItem.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    frame.updateShowExtendsInPackage(extendsDepItem.getState());
+                }
+            });
+            
+            implementsDepItem.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    frame.updateShowImplementsInPackage(implementsDepItem.getState());
+                }
+            });
+            
+            associationDepItem.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    frame.updateShowAssociationsInPackage(associationDepItem.getState());
+                }
+            });
+            
+            usesDepItem.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    frame.updateShowUsesInPackage(usesDepItem.getState());
+                }
+            });
+            
+            containmentDepItem.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    frame.updateShowContainmenstsInPackage(containmentDepItem.getState());
+                }
+            });
+
+            visibleDependeciesMenu.add(extendsDepItem);
+
+            visibleDependeciesMenu.add(implementsDepItem);
+
+            visibleDependeciesMenu.addSeparator();
+
+            visibleDependeciesMenu.add(associationDepItem);
+
+            visibleDependeciesMenu.add(usesDepItem);
+
+            visibleDependeciesMenu.add(containmentDepItem);
+
+            return visibleDependeciesMenu;
+        }
+
+        private static PkgMgrFrame frameFromComponent(Component jc) {
+            while (jc != null) {
+                //System.out.println("hello " + jc.getClass().getName());
+                //System.out.flush();
+
+                if (jc instanceof PkgMgrFrame) {
+                    break;
+                }
+
+                if (jc instanceof JPopupMenu) {
+                    jc = ((JPopupMenu) jc).getInvoker();
+                } else {
+                    jc = jc.getParent();
+                }
+            }
+            return (PkgMgrFrame) jc;
+        }
     }
 
-    //----------------FileSubject-------------------------
+//----------------FileSubject-------------------------
     private final HashSet<FileListener> listeners;
 
     @Override
