@@ -430,34 +430,46 @@ public class GraphEditor extends JLayeredPane
             menuItem.addActionListener((e) -> {
                 try {
                     JPanel content = new JPanel();
-                    content.setLayout(new BoxLayout(content, BoxLayout.PAGE_AXIS));
+                    content.setLayout(new BorderLayout());
 
                     JPanel listPane = new JPanel();
                     listPane.setLayout(new BoxLayout(listPane, BoxLayout.PAGE_AXIS));
 
                     JScrollPane scrollPane = new JScrollPane(listPane);
-                    scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-                    content.add(scrollPane);
+                    scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+                    scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+                    content.add(scrollPane, BorderLayout.CENTER);
                     HashMap<JCheckBoxMenuItem, ClassTarget> targets = new HashMap<>();
                     int size = 400;
+                    int height = 0;
 
                     for (ClassTarget target : ((Package) graph).getClassTargets()) {
                         JCheckBoxMenuItem item = new JCheckBoxMenuItem(target.getBaseName(), target.isVisible());
 
+                        Dimension prefDimension = item.getPreferredSize();
                         if (item.getWidth() > size) {
-                            size = item.getWidth();
+                            size = prefDimension.width;
                         }
 
                         targets.put(item, target);
                         listPane.add(item);
+                        height += prefDimension.height;
                     }
 
                     if (size > 600) {
                         size = 600;
                     }
-                    scrollPane.setMinimumSize(new Dimension(size, 600));
+                    
+                    System.out.println("ge  " + GraphEditor.this.getPreferredSize().height);
+                    if (height > GraphEditor.this.getPreferredSize().height - 200) {
+                        
+                        height = GraphEditor.this.getPreferredSize().height - 200;
+                    } else if (height < 400) {
+                        height = 400;
+                    }
+                    scrollPane.setMinimumSize(new Dimension(size + 20, height));
                     JPanel buttonPane = new JPanel(new FlowLayout());
-                    content.add(buttonPane);
+                    content.add(buttonPane, BorderLayout.PAGE_END);
 
                     JButton okButton = new JButton("OK");
                     JButton cancelButton = new JButton("Cancel");
@@ -466,7 +478,11 @@ public class GraphEditor extends JLayeredPane
 
                     JDialog dialog = new JDialog(SwingUtilities.getWindowAncestor(component), "Select visible classes");
                     dialog.setContentPane(content);
-                    dialog.setSize(size, 620);
+                    Dimension dimension = scrollPane.getMinimumSize();
+                    dimension.height = dimension.height + buttonPane.getMinimumSize().height;
+                    content.setMinimumSize(dimension);
+                    dialog.setMinimumSize(dimension);
+                    dialog.setLocationRelativeTo(GraphEditor.this);
 
                     okButton.addActionListener(new ActionListener() {
                         public void actionPerformed(ActionEvent e) {
