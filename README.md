@@ -1,52 +1,53 @@
-# Uživatelská příručka
-Plugin Class Diagram je dostupný jako open source pro vývojová prostředí IntelliJ IDEA a NetBeans IDE. Instalační soubory, zdrojové kódy i uživatelská příručka v anglickém jazyce jsou dostupné na gitlabu.
+# User guide
 
-Plugin Class diagram je určen pro vytváření a zobrazování class diagramů ze zdrojových kódů Java aplikací. Tím poskytne podporu programátorovi vizualizací struktury jeho programu. Class diagramy je možné vytvářet pouze ze zdrojového kódu v jazyce Java z projektu ve vývojovém prostředí, přičemž v nich není možné následně žádné prvky přidávat ani odebírat jinak než změnou daného kódu.
+Plugin Class Diagram is an open source plugin for IntelliJ IDEA and NetBeans IDE.
 
-##	Instalace IntelliJ IDEA plugin
-Instalace probíhá stejně jako je popsáno v oficiální dokumentaci IntelliJ (https://www.jetbrains.com/help/idea/managing-plugins.html). Nejprve si stáhněte soubor [ClassDiagramIdea.zip](install/ClassDiagramIdea.zip). V prostředí IntelliJ IDEA stiskněte `CTRL+ALT+S` čímž se dostanete do nastavení a otevřete sekci *Plugins*. Na stránce Plugins klikněte na tlačítko *Settings* a poté na *Install Plugin from Disk…*
+Plugin Class Diagram allows to create and view class diagrams of Java apps. Diagram can be made only from application source code, there is no other way to add or delete any element of diagram than to chage the source code.
+
+## Install IntelliJ IDEA plugin
+For installation in IntelliJ IDEA follow the steps of the official documentation (https://www.jetbrains.com/help/idea/managing-plugins.html). Firstly you must download [ClassDiagramIdea.zip](install/ClassDiagramIdea.zip). In IntelliJ IDEA window press `CTRL+ALT+S` and select *Plugins*, then choose *Settings* and *Install Plugin from Disk…*.
 
 ![idea install](readme/install-idea.png)
 
-Vyberte stažený soubor `ClassDiagramIdea.zip` a klikněte na *OK*. Plugin by nyní měl být již plně připraven.
+Choose the previously downloaded file `ClassDiagramIdea.zip` and select *OK*./
 
-##	Instalace NetBeans IDE plugin
-Pro instalaci pluginu si z repositáře stáhněte instalační soubor [`ClassDiagramNB.nbm`](install\ClassDiagramNB.nbm). V NetBeans IDE klikněte na *Tools>Plugins*. V okně Plugins vyberte sekci Downloaded a klikněte na *Add plugins…*. Vyberte stažený soubor `ClassDiagramNB.nbm` a klikněte na *Open*. Poté klikněte na *Install/ a projděte proces instalace. Po dokončení by měl být plugin již plně připraven.
+## Install NetBeans IDE plugin
+For installation in NetBeans IDE download [`ClassDiagramNB.nbm`](install\ClassDiagramNB.nbm). In NetBeans IDE select *Tools>Plugins*. In window Plugins chooose *Downloaded*>*Add plugins…*. Find the previously downloaded file `ClassDiagramNB.nbm` and select *Open*. Click *Install* and wlak through the isntallation.
 
-##	Vytvoření a update class diagramu
-Class diagramy se vytváří pro každý balíček zvlášť a nejsou mezi sebou vzájemně provázané. Po vytvoření diagramu pro konkrétní balíček stačí v panelu Projekt kliknout sekundárním tlačítkem na zvolený balíček a z nabídky vybrat možnost *Create Class diagram*. Pokud je kód v balíčku bez chyb, které by zabránily jeho kompilaci, vytvoří se v balíčku soubor package.bluej a otevře se panel s diagramem. V případě, že kód nelze kompilovat, pokus o vytvoření končí chybou, opravte tedy kód a celý postup zopakujte.
+## Create and update class diagram
+Class diagram is made for a single package and are not conected with each other. Diagram is created by choosing *Create Class diagram* from package context menu in Project panel. If there is any problem in the source code of the selected package diagram is not created and you must fix the code before you can create the diagram.
 
-Diagram se sám neaktualizuje při změně kódu ani běžné kompilaci programu. Pro synchronizaci diagramu s aktuálním stavem programu postupujte stejně jako při vytváření, nad zvoleným balíčkem vyberte možnost *Create Class diagram*. Jestliže už je soubor `pakage.bluej` vytvořený, *Create Class diagram* pouze promítne aktuální stav do původního class diagramu. Odeberou se již neexistující vazby a třídy, stejně tak jejich proměnné, metody, či stereotypy a přidají se nové. Třídám, které v balíčku zůstaly budou, se zachová pozice a velikost před updatem. Nové třídy se umístí do volného prostoru se základní velikostí.
-
-Třídy jsou identifikovány názvem. Pokud tedy dojde k přejmenování pravděpodobně dojde k jejich přemístění nebo změně velikosti.
+Diagram is static and your changes in code are not represented until you recreate it in same way as was created for the first time. Update of diagram will keep as many settings as possible, your class elements should keep their place and size until you rename or delete it.
 
 ![package-context-menu](readme/package-context-menu.png)
 
 ##	Class diagram
-Panel class diagramu je interaktivní zobrazení struktury balíčku. 
+Panel with class diagram is an interactive view of package code structure.
 
-Class diagram balíčku se otevírá v panelu Projekt kliknutím sekundárním tlačítkem na zvolený balíček a z nabídky výběrem možnosti *Open Class diagram*. Položka *Open Class diagram* je použitelná pouze pokud je v balíčku soubor `package.bluej`.
+Diagram is shown in own new tab. You can open an already created diagram by choosing *Open Class diagram* option in package context menu.
 
 ![classDiagram](readme/classDiagram.png)
 
-###	Úprava diagramu
-V digramu je možné měnit pouze velikost a pozici tříd, vazby mezi nimi se automaticky přizpůsobují aktuálnímu rozložení a není možné je měnit. Při stisknutí primárního tlačítka myši a tažení třídy se zobrazí její náhled. 
+###	Diagram layout
+Diagram can be changed only in terms of size and position of classes. Dependencies adjust automaticaly to current layout and it is not possible to change their layout. 
 
-Pro změnu pozice třídy v diagramu stiskněte primární tlačítko myši nad danou třídou, a táhněte myší na požadované místo v diagramu, kde tlačítko uvolněte. Třída se přesune přesně na místo, kde je náhled zobrazen při uvolnění primárního tlačítka myši.
+To chage class position or size just drag and drop the class element or its boarder. 
 
-Pro změnu velikosti třídy stiskněte primární tlačítko myši nad okrajem třídy. Tažením se nyní mění velikost třídy, což opět znázorňuje její náhled. Primární tlačítko uvolněte, jakmile bude náhled mít vámi požadovanou velikost. 
+### Save diagram
+Diagram and its layout is automaticaly saved when the coresponding tab is closed, there is no other way how to save the diagram.
 
-### Ukládání diagramu
-Rozložení diagramu se ukládá automaticky při zavření panelu s diagramem. Úpravy nelze vrátit zpět, pouze provést další úpravy do původního rozložení.
-
-### Rozbalení a sbalení tříd
-Třídy jsou při každém otevření diagramu ve sbaleném stavu, tak se zobrazuje pouze jejich název a stereotyp. Pro zobrazení proměnných a metod lze třídu rozbalit. Při rozbalení se třída zvětší a zobrazí všechny proměnné i metody třídy. Rozbalit a sbalit třídy lze skrze kontextové menu diagramu a jeho položky *Expand selected classes* a *Collapse selected classes*. Mimo toho lze třídy také rozbalit nebo sbalit dvojklikem na vybranou třídu nebo skupinu tříd.
+## Expand and collapse classes
+The classes show only basic information in default. To see its variables and methods you can expand it. Expansion and colapssion can be done either doble clicking selected class or through *Expand selected classes* or *Collapse selected classes* in diagram context menu.
 
 ![save-image](readme/save-image.png)
 
-## Export diagramu
-Diagram je možné exportovat do obrázku ve formátu PNG. Pro export diagramu do obrázku klikněte sekundárním tlačítkem myši na diagram a vyberte možnost Save as image. Po vybrání cesty a názvu souboru, klikněte na Uložit. Diagram se exportuje tak jak je aktuálně zobrazen, pokud tedy chcete mít některé třídy rozbalené, nebo naopak sbalené (viz Rozbalení a sbalení tříd) je potřeba je do tohoto stavu nejdříve uvést.
+## Hide and show diagram elements
+Through diagram context menu you can hide or show elements of diagram. All dependencies of selected type can be hidden or shown by selecting/deselecting it in diagram context menu *Select visible dependencies*.
 
-##	Smazání diagramu
-Pro smazání diagramu stačí smazat soubor package.bluej z vybraného balíčku. Po smazání se zneaktivní možnost *Open Class diagram* v nabídce balíčku a je pouze možné jej znovu vytvořit.
+Every class can be hidden or shown by selecting/deselecting it in popup window through *Select visible classes* in diagram context menu.
 
+## Export diagram
+You can export the diagram as a PNG picture. That is done through diagram context menu option *Save as image*. The picture is exactly same as current view of diagram, inluding expanded classes and hiddend classes or dependencies.
+
+## Delete diagram
+You can delete diagram by deleting `package.bluej` in proper package. When file is deleted *Open Class diagram* option in package context menu is disabled and you can only create it again.
