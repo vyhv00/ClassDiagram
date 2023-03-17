@@ -461,8 +461,6 @@ public class GraphEditor extends JLayeredPane
                     if (size > 600) {
                         size = 600;
                     }
-                    
-                    System.out.println("ge  " + GraphEditor.this.getPreferredSize().height);
                     if (height > GraphEditor.this.getPreferredSize().height - 200) {
                         
                         height = GraphEditor.this.getPreferredSize().height - 200;
@@ -581,9 +579,6 @@ public class GraphEditor extends JLayeredPane
 
         private static PkgMgrFrame frameFromComponent(Component jc) {
             while (jc != null) {
-                //System.out.println("hello " + jc.getClass().getName());
-                //System.out.flush();
-
                 if (jc instanceof PkgMgrFrame) {
                     break;
                 }
