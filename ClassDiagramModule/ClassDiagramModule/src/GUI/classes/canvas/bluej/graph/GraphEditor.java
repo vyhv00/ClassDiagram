@@ -461,9 +461,9 @@ public class GraphEditor extends JLayeredPane
                     if (size > 600) {
                         size = 600;
                     }
-                    if (height > GraphEditor.this.getPreferredSize().height - 200) {
+                    if (height > GraphEditor.this.getHeight() - 200) {
                         
-                        height = GraphEditor.this.getPreferredSize().height - 200;
+                        height = GraphEditor.this.getHeight() - 200;
                     } else if (height < 400) {
                         height = 400;
                     }
