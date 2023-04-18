@@ -37,7 +37,7 @@ public final class CreateDiagramAction extends DiagramAction {
 
     public CreateDiagramAction(Lookup context) {
         super(context.lookup(FileObject.class));
-        putValue(Action.NAME, "Create Class Diagram");
+        putValue(Action.NAME, "Create/Update Class Diagram");
     }
 
     @Override
