@@ -33,7 +33,7 @@
         <group id="ClassDiagramActions">
             <separator />
             <action id="createClassDiagram" class="classDiagramPainter.actions.CreateDiagramAction"
-                    text="Create Class diagram">
+                    text="Create/Update Class diagram">
             </action>
             <action id="openClassDiagram" class="classDiagramPainter.actions.OpenDiagramAction"
                     text="Open Class diagram">

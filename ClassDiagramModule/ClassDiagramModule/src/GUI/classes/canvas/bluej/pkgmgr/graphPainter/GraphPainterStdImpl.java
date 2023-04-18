@@ -146,6 +146,9 @@ public class GraphPainterStdImpl
         if (!(edge instanceof Dependency)) {
             throw new IllegalArgumentException("Not a dependency");
         }
+        if (!edge.from.isVisible() || !edge.to.isVisible()) {
+            return;
+        }
         Dependency dependency = (Dependency) edge;
         getDependencyPainter(dependency).paint(g, dependency, isPermanentFocusOwner());
     }
